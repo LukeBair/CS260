@@ -58,10 +58,13 @@ Real-time communication using WebSockets for:
 ## Design Mockups
 
 ### 1. Login / Register Screen
+![login screen](images/login-page.png)
 
 ### 2. Project Page
+![project page](images/project-page.png)
 
 ### 3. Basic Page Layout
+![basic page](images/doc-page.png)
 
 ### 4. AI editor UI
-
+![AI helper](images/ai-helper.png)
