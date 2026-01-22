@@ -1,0 +1,79 @@
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.login-container,
+.info-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  padding: 2rem;
+}
+
+.login-container {
+  background: #1c1c1c;
+  color: #ffffff;
+}
+
+.form-group {
+  padding-bottom: 0.5rem;
+  display: block;
+}
+
+/* Ensure label sits above its input and input fills the line */
+.form-group label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.form-group input {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.login-container { flex: 0 0 30%; }
+.info-container {
+  flex: 0 0 70%;
+  /* fallback color while image loads */
+  background-color: #e6f4ff;
+  background-image: url("public/dummy_background.jpg");
+  background-size: cover;
+  background-position: center 60%; /* moved down a bit */
+  background-repeat: no-repeat;
+  color: #ffffff; /* make text white on top of the image */
+  /* ensure readable contrast on bright images */
+  position: relative;
+}
+
+.login-form h2 {
+  font-family: "Texturina", serif;
+  font-weight: 600;
+}
+
+.info-container h1 {
+  font-family: "Texturina", serif;
+  font-weight: 800;
+  font-size: 6rem;
+  margin: 0;
+  color: #ffffff;
+}
+
+.info-container p,
+.info-container a,
+.info-container span,
+.info-container div { color: inherit; }
+
+
+@media (max-width: 700px) {
+  .container { flex-direction: column; }
+  .login-container,
+  .info-container { flex: none; width: 100%; }
+}
