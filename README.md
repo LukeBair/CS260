@@ -90,3 +90,4 @@ added:
 - index.html
 - dummy_background.html
   - future images would be constrained to _maybe_ profile images but most likely md doc notes
+- eventually use params or headers to swap from account and back (unless this is a full spa)
