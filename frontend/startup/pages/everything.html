@@ -38,6 +38,9 @@
     <script>
         console.log("websocket connection for live user updates + ai input");
     </script>
+    <script>
+        console.log("third party call to gemini api every 5 min? (if [significant] changes are made)");
+    </script>
 </main>
 
 <script>
@@ -133,7 +136,7 @@
         const btn = e.target;
         const section = btn.dataset.section;
 
-        if (section === "account") {
+        if (section === "account") {  // Note: Account button needs data-section="account" in HTML
             window.location.href = "account.html";
             return;
         }
