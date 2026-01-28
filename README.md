@@ -76,18 +76,25 @@ basic styling as well to better see the formatting of everything
 
 **used ai to generate dummy data cause i dont wanna do all that**
 
-in the future: 
+
+## HTML deliverable
+
+For this deliverable I built out the structure of my application using HTML.
+
+ I completed the prerequisites for this deliverable (Simon deployed, GitHub link, Git commits)
+ HTML pages - Two HTML pages that represent the ability to login and view project.
+ Proper HTML element usage - I just used div elements for everything. (and a nav)
+ Links - The login page automatically links to the story page. the story page can change to be characters, props, etc.
+ Text - because there will be many dynamic elements, there are some example chapters, chapter text etc. _this was ai gen, cause it wasnt important to the html_
+ 3rd party API placeholder - Placeholder for calls to gemini.
+ Images - one image in the login page, otherwise images will be added by users to the docs
+ DB/Login - Input box and submit button for login. no user database currently demoed, instead story, character, etc data is demoed
+ WebSocket - just a console log for now, will show realtime user interaction though
+
+in the future:
 - login flow
 - actual styling
 - gemini api integration
   - hidden docs for gemini integration, mcp?
 - PlateJS replacement for textareas
   - md to epub conversions??
-
-added:
-- account.html
-- everything.html < could be better named but I cant be bothered rn
-- index.html
-- dummy_background.html
-  - future images would be constrained to _maybe_ profile images but most likely md doc notes
-- eventually use params or headers to swap from account and back (unless this is a full spa)
