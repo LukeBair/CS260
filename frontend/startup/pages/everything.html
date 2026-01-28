@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mythril</title>
+</head>
+
+<body>
+<aside id="sidebar" style="background: lightgray; padding:10px; display: flex; flex-direction: column; position: fixed; height: 100%; width: 130px; align-items: center; row-gap: 30px">
+    <button data-section="story"     style="width: 95px; height: 60px">Story</button>
+    <button data-section="characters" style="width: 95px; height: 60px">Characters</button>
+    <button data-section="locations"  style="width: 95px; height: 60px">Locations</button>
+    <button data-section="props"      style="width: 95px; height: 60px">Props</button>
+    <button data-section="history"    style="width: 95px; height: 60px">History</button>
+
+    <button style="width: 95px; height: 60px; margin-top:35vh;">Account</button>
+</aside>
+
+<main id="content" style="margin-left:150px; padding:10px; display:flex; flex-direction:row; column-gap:20px;">
+    <div id="list-container" style="display:flex; flex-direction:column; min-width:220px;">
+        <h2 id="section-title">Select a section</h2>
+        <div id="items-list"></div>
+    </div>
+
+    <label>
+        <textarea id="chapter-input" style="width: 300px; height: 400px; margin-top:20px; resize: none;" readonly></textarea>
+    </label>
+</main>
+
+<script>
+    // Global data
+    let data = {};
+    let currentSection = null;
+
+    // Load JSON once when page opens
+    fetch('data.json')
+        .then(res => res.json())
+        .then(json => {
+            data = json;
+            // Optional: load first section automatically
+            loadSection('characters');
+        })
+        .catch(err => {
+            console.error("Failed to load data.json", err);
+            document.getElementById('section-title').textContent = "Error loading data";
+        });
+
+    function loadSection(sectionKey) {
+        if (!data[sectionKey]) return; // Invalid section
+
+        if (sectionKey === "story") {
+            window.location.href = "story.html";
+            return;
+        } else if (sectionKey === "account") {
+            window.location.href = "account.html";
+            return;
+        }
+
+        const section = data[currentSection];
+
+        document.getElementById('section-title').textContent = section.title;
+
+        const listEl = document.getElementById('items-list');
+        listEl.innerHTML = '';
+
+        section.items.forEach(item => {
+            const btn = document.createElement('button');
+            btn.textContent = item.label;
+
+            //tmp styling
+            btn.style.padding = '5px';
+            btn.style.marginBottom = '5px';
+            btn.style.border = 'none';
+            btn.onclick = () => {
+                document.getElementById('chapter-input').value = item.content; // change this when moving over to react
+            };
+            listEl.appendChild(btn);
+        });
+
+        if (section.items.length > 0) {
+            document.getElementById('chapter-input').value = section.items[0].content;
+        } else {
+            document.getElementById('chapter-input').value = '';
+        }
+    }
+
+    // Sidebar clicks
+    document.querySelectorAll('#sidebar button[data-section]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const section = btn.getAttribute('data-section');
+            loadSection(section);
+        });
+    });
+</script>
+</body>
+</html>

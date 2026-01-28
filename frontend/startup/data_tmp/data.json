@@ -1,0 +1,87 @@
+{
+  "story": {
+    "title": "Story",
+    "items": [
+      {
+        "id": 1,
+        "label": "Chapter 1 - The Awakening",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+      },
+      {
+        "id": 2,
+        "label": "Chapter 2 - Shadows of the Past",
+        "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+      },
+      {
+        "id": 3,
+        "label": "Chapter 3 - The Gathering Storm",
+        "content": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt."
+      },
+      {
+        "id": 4,
+        "label": "Chapter 4 - Echoes in the Void",
+        "content": "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?"
+      }
+    ]
+  },
+  "characters": {
+    "title": "Characters",
+    "items": [
+      {
+        "id": 1,
+        "label": "Spooder Man",
+        "content": "The Amazing Spooderman\n\nPersonal information:\n- Name: Peter Parker\n- Age: 18\n- Occupation: Student / Superhero\n- Background:\n  - Bitten by a radioactive spider and gained some powers\n  - Balances school with fighting crime\n- Personality:\n  - Witty and humorous\n  - Responsible and caring\n- Appearance:\n  - Slim build, athletic\n  - Wears a red and blue spider-themed suit\n\nAbilities:\n- Wall-crawling\n- Super strength and agility\n..."
+      },
+      {
+        "id": 2,
+        "label": "The Incredible Bulk",
+        "content": "The Incredible Bulk\n\nPersonal information:\n- Name: Bruce Banner\n- Age: 40\n- Occupation: Scientist / Superhero\n- Background:\n  - Exposed to gamma radiation during an experiment gone wrong\n  - Transforms into the Hulk when angry or stressed\n- Personality:\n  - Intelligent and reserved as Banner\n  - Aggressive and powerful as the Bulk\n- Appearance:\n  - Tall, muscular build\n  - Green skin and massive physique as the Bulk\n\nAbilities:\n- Superhuman strength and durability\n- Rapid healing factor\n..."
+      }
+    ]
+  },
+  "locations": {
+    "title": "Locations",
+    "items": [
+      {
+        "id": 1,
+        "label": "Floating Isles of Veyra",
+        "content": "Floating Isles of Veyra\n\nDescription:\n- A chain of levitating islands connected by vine bridges\n- Constant gentle winds and glowing crystals underneath\n\nKey features:\n- Central crystal spire used for navigation\n- Home to sky nomads and wind mages\n- Dangerous storm season every 7 years\n\nInhabitants:\n- Mostly avian folk and cloud drakes\n- Small human settlements on the lower isles\n..."
+      },
+      {
+        "id": 2,
+        "label": "The Sunken City of Thaloryn",
+        "content": "The Sunken City of Thaloryn\n\nDescription:\n- Submerged metropolis preserved by magic\n- Visible from the surface during calm weather\n\nKey features:\n- Giant coral-encrusted towers\n- Bioluminescent streets still faintly glowing\n- Temple of the Deep with sealed vault\n\nDangers:\n- Pressure traps and collapsing structures\n- Guardian leviathans\n- Cursed water that causes memory loss\n..."
+      }
+    ]
+  },
+  "props": {
+    "title": "Props",
+    "items": [
+      {
+        "id": 1,
+        "label": "Starshard Dagger",
+        "content": "The Starshard Dagger\n\nType: Magical weapon\nMaterial: Meteorite obsidian + star-forged silver\n\nProperties:\n- Cuts through magical barriers\n- Glows faintly near celestial magic\n- Leaves trails of starlight when swung\n\nDrawbacks:\n- Slowly drains user's life force with prolonged use\n- Attracts void creatures when used at night\n..."
+      },
+      {
+        "id": 2,
+        "label": "Amulet of Whispered Truths",
+        "content": "Amulet of Whispered Truths\n\nCursed jewelry\n\nType: Necklace\nMaterial: Black opal on mithril chain\n\nProperties:\n- Reveals hidden lies when worn\n- Allows hearing thoughts within 5 meters (uncontrolled)\n\nCurse:\n- Wearer gradually loses ability to speak truth\n- Voices become louder and more tormenting over time\n..."
+      }
+    ]
+  },
+  "history": {
+    "title": "History",
+    "items": [
+      {
+        "id": 1,
+        "label": "The Shattering – Year 0",
+        "content": "The Shattering – Year 0\n\nThe cataclysm that broke the continent\n\nDetails:\n- The Prime Spire was destroyed during the final battle of the God-Wars\n- Massive magical backlash fractured the landmass into seven pieces\n- Magic became unstable for the next three centuries\n\nConsequences:\n- Rise of isolated kingdoms\n- Loss of ancient knowledge\n- Appearance of the first rifts to the Void\n..."
+      },
+      {
+        "id": 2,
+        "label": "The Iron Dominion – Year 347",
+        "content": "The Iron Dominion – Year 347\n\nThe rise and fall of the machine empire\n\nDetails:\n- Inventors harnessed steam and rune-tech to unify the western lands\n- Built colossal automatons and iron cities\n- Collapsed after the Great Overload – machines turned against creators\n\nLegacy:\n- Scattered ruins filled with dangerous constructs\n- Surviving blueprints still sought by tinkerers\n- Cultural fear of unchecked invention\n..."
+      }
+    ]
+  }
+}
