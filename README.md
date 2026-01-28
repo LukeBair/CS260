@@ -68,3 +68,25 @@ Real-time communication using WebSockets for:
 
 ### 4. AI editor UI
 ![AI helper](images/ai-helper.png)
+
+
+## Updates for HTML Dummy
+basic html for buttons, input areas, and ai suggestion interfaces added. 
+basic styling as well to better see the formatting of everything
+
+**used ai to generate dummy data cause i dont wanna do all that**
+
+in the future: 
+- login flow
+- actual styling
+- gemini api integration
+  - hidden docs for gemini integration, mcp?
+- PlateJS replacement for textareas
+  - md to epub conversions??
+
+added:
+- account.html
+- everything.html < could be better named but I cant be bothered rn
+- index.html
+- dummy_background.html
+  - future images would be constrained to _maybe_ profile images but most likely md doc notes
