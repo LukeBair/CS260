@@ -6,15 +6,15 @@
 </head>
 
 <body>
-<aside id="sidebar" style="background: lightgray; padding:10px; display: flex; flex-direction: column; position: fixed; height: 100%; width: 130px; align-items: center; row-gap: 30px">
+<nav id="sidebar" style="background: lightgray; padding:10px; display: flex; flex-direction: column; position: fixed; height: 100%; width: 130px; align-items: center; row-gap: 30px">
     <button data-section="story"     style="width: 95px; height: 60px">Story</button>
     <button data-section="characters" style="width: 95px; height: 60px">Characters</button>
     <button data-section="locations"  style="width: 95px; height: 60px">Locations</button>
     <button data-section="props"      style="width: 95px; height: 60px">Props</button>
     <button data-section="history"    style="width: 95px; height: 60px">History</button>
 
-    <button style="width: 95px; height: 60px; margin-top:35vh;">Account</button>
-</aside>
+    <button data-section="account" style="width: 95px; height: 60px; margin-top:35vh;">Account</button>
+</nav>
 
 <main id="content" style="margin-left:150px; padding:10px; display:flex; flex-direction:row; column-gap:20px;">
     <div id="list-container" style="display:flex; flex-direction:column; min-width:220px;">
@@ -87,8 +87,7 @@
     }
 
     function loadSection(section, autoSelectFirst = false) {
-        sectionTitle.textContent = section.charAt(0).toUpperCase() + section.slice(1) + "s";  // e.g. "Storys" → wait, fix to pluralize properly if needed
-
+        sectionTitle.textContent = section.charAt(0).toUpperCase() + section.slice(1);
         clearList();
 
         // Toggle AI suggestion box visibility
