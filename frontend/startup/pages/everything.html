@@ -25,72 +25,131 @@
     <label>
         <textarea id="chapter-input" style="width: 300px; height: 400px; margin-top:20px; resize: none;" readonly></textarea>
     </label>
+
+    <div id="ai-suggestion-box" style="width: 200px; height: 200px; margin-top:20px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between;">
+        <p>ai input about descrepency goes here. will highlihgt section its talking about.</p>
+        <div>
+            <a href="#" onclick="loadSection('characters'); return false;">> Characters</a>
+            <br><br>
+            <button style="width: 100%; padding: 5px;">Resolve</button>
+        </div>
+    </div>
+
+    <script>
+        console.log("websocket connection for live user updates + ai input");
+    </script>
 </main>
 
 <script>
-    // Global data
-    let data = {};
-    let currentSection = null;
+    const worldData = {
+        story: [
+            { title: "Chapter 1: The Shattering", content: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In the beginning the world was one perfect sphere, held together by the songs of fourteen crystal gods. But pride cracked the harmony..." },
+            { title: "Chapter 2: The First Flame", content: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium. A single ember escaped the forge of creation..." },
+            { title: "Chapter 3: Age of the Veil", content: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum. The sky tore open, and shadows learned to hunger..." }
+        ],
+        characters: [
+            { title: "Kaelith Veyne",      content: "Once a high priestess of the Sunspire, now a wanderer cursed with eternal twilight in her eyes. She whispers to dying stars..." },
+            { title: "Rorik Ironvein",     content: "Dwarven forgemaster whose hammer sings when it strikes true orichalcum. Gruff, loyal, secretly terrified of open water." },
+            { title: "Sylvara of the Mist", content: "Elven ranger who speaks to fog as if it were family. Few have seen her face and lived to describe it." }
+        ],
+        locations: [
+            { title: "Ashen Cradle",        content: "A caldera city built inside the corpse of a dead volcano. Black glass streets reflect every torch like accusing eyes..." },
+            { title: "The Drowned Library", content: "Submerged archive beneath the Glass Sea. Mermaids guard tomes written in bioluminescent ink that burns the unworthy." },
+            { title: "Spire of Whispers",   content: "Endless tower of white bone. Every floor repeats the same hallway — but the voices change with each ascent." }
+        ],
+        props: [
+            { title: "Crown of Eclipse",    content: "Black iron circlet set with a single blood opal that drinks light. Wearer dreams only in negatives, waking hollow." },
+            { title: "Blade of Severance",  content: "A sword whose edge is so fine it can cut the memory of its own existence from the mind of the wounded." },
+            { title: "Lantern of the Last", content: "Never needs oil. Shows only the last person who will ever look upon its light — often, it's you." }
+        ],
+        history: [
+            { title: "Year 0 – The Binding",     content: "The gods chained the primordial chaos beneath fourteen obsidian seals. The seals still hum faintly..." },
+            { title: "Year 317 – The Red Sky",    content: "For three days the sun bled. Crops withered. Children were born without pupils, seeing only truth." },
+            { title: "Year 1241 – The Unmaking",  content: "A single word spoken in the wrong tongue unraveled three kingdoms overnight. Echoes linger in the wind." }
+        ]
+    };
 
-    // Load JSON once when page opens
-    fetch('data.json')
-        .then(res => res.json())
-        .then(json => {
-            data = json;
-            // Optional: load first section automatically
-            loadSection('characters');
-        })
-        .catch(err => {
-            console.error("Failed to load data.json", err);
-            document.getElementById('section-title').textContent = "Error loading data";
+    // Cache DOM elements
+    const sectionTitle   = document.getElementById("section-title");
+    const itemsList      = document.getElementById("items-list");
+    const chapterInput   = document.getElementById("chapter-input");
+    const navButtons     = document.querySelectorAll("#sidebar button[data-section]");
+    const aiSuggestionBox = document.getElementById("ai-suggestion-box");
+
+    // Default message when nothing is selected
+    const defaultText = "Select an entry to view its description.";
+
+    function clearList() {
+        itemsList.innerHTML = "";
+    }
+
+    function loadSection(section, autoSelectFirst = false) {
+        sectionTitle.textContent = section.charAt(0).toUpperCase() + section.slice(1) + "s";  // e.g. "Storys" → wait, fix to pluralize properly if needed
+
+        clearList();
+
+        // Toggle AI suggestion box visibility
+        if (section === 'story') {
+            aiSuggestionBox.style.display = 'flex';
+        } else {
+            aiSuggestionBox.style.display = 'none';
+        }
+
+        const entries = worldData[section] || [];
+        if (entries.length === 0) {
+            itemsList.innerHTML = "<p style='color:#777;'>No entries yet.</p>";
+            chapterInput.value = defaultText;
+            return;
+        }
+
+        let firstEntry = null;
+        entries.forEach((entry, index) => {
+            const btn = document.createElement("button");
+            btn.textContent = entry.title;
+            btn.style.cssText = "width:100%; margin:6px 0; padding:12px; text-align:left; border:1px solid #ccc; background:#f9f9f9; cursor:pointer;";
+            btn.onclick = () => {
+                chapterInput.value = entry.content;
+                // Highlight selected
+                document.querySelectorAll("#items-list button").forEach(b => b.style.background = "#f9f9f9");
+                btn.style.background = "#e0e0ff";
+            };
+            itemsList.appendChild(btn);
+
+            if (index === 0) firstEntry = entry;
         });
 
-    function loadSection(sectionKey) {
-        if (!data[sectionKey]) return; // Invalid section
+        // Auto-select first if requested (e.g. on initial load)
+        if (autoSelectFirst && firstEntry) {
+            chapterInput.value = firstEntry.content;
+            // Highlight the first button
+            itemsList.querySelector("button").style.background = "#e0e0ff";
+            sectionTitle.textContent += ` – ${firstEntry.title}`;  // e.g. "Story – Chapter 1: The Shattering"
+        } else {
+            chapterInput.value = defaultText;
+        }
+    }
 
-        if (sectionKey === "story") {
-            window.location.href = "story.html";
-            return;
-        } else if (sectionKey === "account") {
+    function handleNav(e) {
+        const btn = e.target;
+        const section = btn.dataset.section;
+
+        if (section === "account") {
             window.location.href = "account.html";
             return;
         }
 
-        const section = data[currentSection];
-
-        document.getElementById('section-title').textContent = section.title;
-
-        const listEl = document.getElementById('items-list');
-        listEl.innerHTML = '';
-
-        section.items.forEach(item => {
-            const btn = document.createElement('button');
-            btn.textContent = item.label;
-
-            //tmp styling
-            btn.style.padding = '5px';
-            btn.style.marginBottom = '5px';
-            btn.style.border = 'none';
-            btn.onclick = () => {
-                document.getElementById('chapter-input').value = item.content; // change this when moving over to react
-            };
-            listEl.appendChild(btn);
-        });
-
-        if (section.items.length > 0) {
-            document.getElementById('chapter-input').value = section.items[0].content;
-        } else {
-            document.getElementById('chapter-input').value = '';
+        if (section && worldData[section] !== undefined) {
+            loadSection(section, false);  // Don't auto-select first on nav clicks
         }
     }
 
-    // Sidebar clicks
-    document.querySelectorAll('#sidebar button[data-section]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const section = btn.getAttribute('data-section');
-            loadSection(section);
-        });
-    });
+    // Attach click handlers
+    navButtons.forEach(btn => btn.addEventListener("click", handleNav));
+
+    function autoLoadStory() {
+        loadSection("story", true);
+    }
+    window.addEventListener("load", autoLoadStory);
 </script>
 </body>
 </html>

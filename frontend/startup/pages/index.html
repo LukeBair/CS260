@@ -4,32 +4,43 @@
     <meta charset="UTF-8">
     <title>Mythril Login</title>
 </head>
-<body>
-    <div class="container">
-        <div class="header-thingy">
-            <!-- background image goes here -->
-            <img src="../dummy_background.jpg" alt="background" style="width:40%;height:40%;">
-            <h1>Mythril</h1>
-            <h3>Where stories are forged</h3>
-        </div>
-        <div class="login-container">
-            <form action="/login" method="post">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-                <br><br>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                <br><br> <!-- brs are temp until styling -->
-                <button type="submit" onclick="handleLogin()">Login</button>
+<body style="display: flex; height: 100vh; margin: 0;">
 
-                <script>
-                    // Placeholder for future login functionality
-                    function handleLogin() {
-                        window.location.href = "everything.html";
-                    }
-                </script>
-            </form>
+    <div class="container" style="display: flex; width: 100%;">
+
+        <!-- Left Column: Login Form -->
+        <div class="login-column" style="flex: 1; padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <div class="login-container">
+                <form action="/login" method="post">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" required>
+                    <br><br>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                    <br><br> <!-- brs are temp until styling -->
+                    <button type="submit" onclick="handleLogin()">Login</button>
+
+                    <script>
+                        // Placeholder for future login functionality
+                        function handleLogin() {
+                            window.location.href = "everything.html";
+                        }
+                    </script>
+                </form>
+            </div>
         </div>
+a
+        <!-- Right Column: Header/Branding -->
+        <div class="header-column" style="flex: 1; padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+            <div class="header-thingy">
+                <!-- background image goes here -->
+                <img src="../dummy_background.jpg" alt="background" style="width:40%;height:40%;">
+                <h1>Mythril</h1>
+                <h3>Where stories are forged</h3>
+            </div>
+        </div>
+
     </div>
+
 </body>
 </html>
