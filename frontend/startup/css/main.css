@@ -89,3 +89,79 @@ h2 {
 h1, h2, h3, p {
     font-family: 'Merriweather', serif;
 }
+
+/* Attribution Button */
+#attribution-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: transparent;
+    color: var(--dark-background-color);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure it's above other content */
+    box-shadow: none;
+    transition: background-color 0.3s ease;
+}
+
+#attribution-button:hover {
+    background-color: var(--accent-color);
+}
+
+/* Attribution Bar */
+#attribution-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--dark-background-color);
+    color: var(--background-color);
+    padding: 15px 20px;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+    z-index: 998; /* Below the attribution button */
+    transform: translateY(100%); /* Start hidden below the screen */
+    transition: transform 0.3s ease-out;
+}
+
+#attribution-bar.visible {
+    transform: translateY(0); /* Slide up into view */
+}
+
+#attribution-bar h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: var(--main-color);
+    font-size: 18px;
+    border-bottom: 1px solid var(--accent-color);
+    padding-bottom: 5px;
+}
+
+#attribution-bar p, #attribution-bar ul {
+    font-family: 'Alegreya', serif;
+    font-size: 14px;
+    line-height: 1.4;
+    margin-bottom: 10px;
+}
+
+#attribution-bar ul {
+    padding-left: 20px;
+}
+
+#attribution-bar li {
+    margin-bottom: 5px;
+}
+
+#attribution-bar a {
+    color: var(--main-color);
+    text-decoration: none;
+}
+
+#attribution-bar a:hover {
+    text-decoration: underline;
+}

@@ -25,16 +25,16 @@
         <span>Locations</span>
     </button>
     <button data-section="props" class="nav-button">
-        <img src="work-in-progress.png" alt="story icon" class="sidebar-image">
+        <img src="chest.png" alt="story icon" class="sidebar-image">
         <span>Props</span>
     </button>
     <button data-section="history" class="nav-button">
-        <img src="work-in-progress.png" alt="story icon" class="sidebar-image">
+        <img src="hour-glass.png" alt="story icon" class="sidebar-image">
         <span>History</span>
     </button>
 
     <button data-section="account" class="nav-button account-button">
-        <img src="work-in-progress.png" alt="story icon" class="sidebar-image">
+        <img src="cog-wheel-silhouette.png" alt="story icon" class="sidebar-image">
         <span>Account</span>
     </button>
 </nav>
@@ -162,15 +162,51 @@
 
         if (section && worldData[section] !== undefined) {
             loadSection(section, true);  // Don't auto-select first on nav clicks
+            // Update the URL to reflect the new section
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.set('section', section);
+            history.pushState({ path: newUrl.href }, '', newUrl.href);
         }
     }
 
     navButtons.forEach(btn => btn.addEventListener("click", handleNav));
 
-    function autoLoadStory() {
-        loadSection("story", true);
+    function getQueryParam(param) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(param);
     }
-    window.addEventListener("load", autoLoadStory);
+
+    window.addEventListener("load", () => {
+        const initialSection = getQueryParam('section');
+        if (initialSection && worldData[initialSection]) {
+            loadSection(initialSection, true);
+        } else {
+            loadSection("story", true); // Default to story if no valid section param
+        }
+
+        // Attribution bar logic
+        const attributionButton = document.getElementById("attribution-button");
+        const attributionBar = document.getElementById("attribution-bar");
+
+        attributionButton.addEventListener("click", () => {
+            attributionBar.classList.toggle("visible");
+        });
+    });
 </script>
+    <button id="attribution-button" title="Attributions"><img src="information-button.png" alt="Info" class="sidebar-image"></button>
+    <div id="attribution-bar" class="hidden">
+        <h3>Attributions</h3>
+        <p>Icons sourced from Flaticon:</p>
+        <ul>
+            <li><a href="https://www.flaticon.com/free-icon/information-button_100293" target="_blank">Information Button</a></li>
+            <li><a href="https://www.flaticon.com/free-icon/chest_2721118" target="_blank">Chest</a></li>
+            <li><a href="https://www.flaticon.com/free-icon/hour-glass_520261" target="_blank">Hour Glass</a></li>
+            <li><a href="https://www.flaticon.com/free-icon/cogwheel-silhouette_23434" target="_blank">Cogwheel</a></li>
+            <li><a href="https://www.flaticon.com/free-icon/open-book_372179" target="_blank">Open Book</a></li>
+            <li><a href="https://www.flaticon.com/free-icon/pin_3136005" target="_blank">Pin</a></li>
+            <li><a href="https://www.flaticon.com/free-icon/user_747376" target="_blank">User</a></li>
+            </ul>
+        <p>Fonts: Alegreya & Merriweather from Google Fonts</p>
+    </div>
 </body>
 </html>
