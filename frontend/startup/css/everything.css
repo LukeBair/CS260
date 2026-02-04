@@ -47,7 +47,9 @@
     border: none;
     border-radius: 0px;
     cursor: pointer;
-    color: var(--background-color)
+    color: var(--background-color);
+    font-family: 'Alegreya', serif;
+    font-size: 14px;
 }
 
 
