@@ -1,0 +1,33 @@
+:root {
+    --background-color: #F4F4E7;
+    --accent-color: #93A197;
+}
+
+body {
+    background-color: var(--background-color);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+#sidebar {
+    background: lightgray;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100%;
+    width: 130px;
+    align-items: center;
+    row-gap: 30px;
+}
+
+.nav-button {
+    width: 95px;
+    height: 60px;
+}
+
+.account-button {
+    margin-top: 35vh;
+}
