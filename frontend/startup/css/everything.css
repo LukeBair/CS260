@@ -1,6 +1,13 @@
 #content {
-    margin-left: 150px;
+    margin-left: 120px;
     padding: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+#page-content {
+    padding-top: 32px;
     display: flex;
     flex-direction: row;
     gap: 20px;
@@ -15,36 +22,49 @@
 #chapter-input {
     width: 55vw;
     height: 90vh;
-    margin-top: 20px;
     resize: none;
 }
 
 #ai-suggestion-box {
     width: 200px;
-    height: 200px;
-    margin-top: 20px;
-    padding: 10px;
+    height: 240px;
+    margin-top: 200px; /* this will change */
+    padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    background: var(--accent-color-2);
+}
+
+#ai-suggestion-box a {
+    color: var(--dark-background-color)
 }
 
 .resolve-button {
     width: 100%;
     padding: 5px;
+    background: var(--dark-background-color);
+    border: none;
+    border-radius: 0px;
+    cursor: pointer;
+    color: var(--background-color)
 }
+
 
 .no-entries {
     color: #777;
 }
 
 .list-item-button {
-    /*margin: 6px 0;*/
-    padding: 12px;
+    padding: 6px 10px;
     text-align: left;
-    border: 1px solid #ccc;
-    background: #f9f9f9;
+    background-color: var(--background-color);
+    color: var(--dark-background-color);
+    border: none;
+    border-radius: 0;
     cursor: pointer;
+    font-size: 18px;
+    font-family: 'Alegreya', serif;
 }
 
 #items-list {
@@ -52,5 +72,5 @@
     flex-direction: column;
 }
 .list-item-button.selected {
-    background: #e0e0ff;
+    background: var(--accent-color-2);
 }

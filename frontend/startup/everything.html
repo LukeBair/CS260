@@ -10,33 +10,54 @@
 
 <body>
 <nav id="sidebar">
-    <button data-section="story"     class="nav-button">Story</button>
-    <button data-section="characters" class="nav-button">Characters</button>
-    <button data-section="locations"  class="nav-button">Locations</button>
-    <button data-section="props"      class="nav-button">Props</button>
-    <button data-section="history"    class="nav-button">History</button>
+<!--    <img src="feather.png" alt="Feather logo" id="feather-logo">-->
+    <h2>Mythril</h2>
+    <button data-section="story" class="nav-button">
+        <img src="open-book.png" alt="story icon" class="sidebar-image">
+        <span>Story</span>
+    </button>
+    <button data-section="characters" class="nav-button">
+        <img src="user.png" alt="story icon" class="sidebar-image">
+        <span>Characters</span>
+    </button>
+    <button data-section="locations" class="nav-button">
+        <img src="pin.png" alt="story icon" class="sidebar-image">
+        <span>Locations</span>
+    </button>
+    <button data-section="props" class="nav-button">
+        <img src="work-in-progress.png" alt="story icon" class="sidebar-image">
+        <span>Props</span>
+    </button>
+    <button data-section="history" class="nav-button">
+        <img src="work-in-progress.png" alt="story icon" class="sidebar-image">
+        <span>History</span>
+    </button>
 
-    <button data-section="account" class="nav-button account-button">Account</button>
+    <button data-section="account" class="nav-button account-button">
+        <img src="work-in-progress.png" alt="story icon" class="sidebar-image">
+        <span>Account</span>
+    </button>
 </nav>
 
 <main id="content">
-    <div id="list-container">
-        <div id="items-list"></div>
-    </div>
+    <div id="page-content">
+        <div id="list-container">
+            <div id="items-list"></div>
+        </div>
 
-    <label>
-        <textarea id="chapter-input" readonly></textarea>
-    </label>
+        <label>
+            <textarea id="chapter-input" readonly></textarea>
+        </label>
 
-    <div id="ai-suggestion-box">
-        <p>ai input about descrepency goes here. will highlight section its talking about.</p>
-        <div>
-            <a href="#" onclick="loadSection('characters'); return false;">> Characters</a>
-            <br><br>
-            <button class="resolve-button">Resolve</button>
+        <div id="ai-suggestion-box">
+            <p>ai input about descrepency goes here. will highlight section its talking about.</p>
+            <div>
+                <a href="#" onclick="loadSection('characters'); return false;">> Source: Joe</a>
+                <br><br>
+                <button class="resolve-button">Resolve</button>
+            </div>
         </div>
     </div>
-
     <script>
         console.log("websocket connection for live user updates + ai input");
     </script>
@@ -131,7 +152,7 @@
     }
 
     function handleNav(e) {
-        const btn = e.target;
+        const btn = e.currentTarget;
         const section = btn.dataset.section;
 
         if (section === "account") {  // Note: Account button needs data-section="account" in HTML
@@ -140,7 +161,7 @@
         }
 
         if (section && worldData[section] !== undefined) {
-            loadSection(section, false);  // Don't auto-select first on nav clicks
+            loadSection(section, true);  // Don't auto-select first on nav clicks
         }
     }
 

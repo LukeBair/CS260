@@ -8,6 +8,8 @@
 
 body {
     background-color: var(--background-color);
+    margin: 0;
+    color: var(--dark-background-color);
 }
 
 * {
@@ -15,22 +17,75 @@ body {
 }
 
 #sidebar {
-    background: lightgray;
+    background: var(--dark-background-color);
     padding: 10px;
     display: flex;
     flex-direction: column;
     position: fixed;
     height: 100%;
-    width: 130px;
+    width: 112px;
     align-items: center;
-    row-gap: 30px;
+    row-gap: 38px;
 }
 
 .nav-button {
-    width: 95px;
+    width: 80px;
     height: 60px;
+    border: none;
+    background: none;
+    font-family: 'Alegreya', serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--accent-color-2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .account-button {
-    margin-top: 35vh;
+    margin-top: 21vh;
+}
+
+/* had to get groks help with this cause i didnt wanna mess with inkscape today
+led me to css-color-filter-generator */
+#feather-logo {
+    filter:
+            brightness(0)
+            saturate(100%)
+            invert(69%)
+            sepia(37%)
+            saturate(365%)
+            hue-rotate(2deg)
+            brightness(98%)
+            contrast(105%);
+
+    width: 48px;
+    height: 48px;
+    margin-top: 16px;
+}
+
+.sidebar-image {
+    filter:
+            brightness(0)
+            saturate(100%)
+            invert(58%)
+            sepia(14%)
+            saturate(754%)
+            hue-rotate(305deg)
+            brightness(82%)
+            contrast(82%);
+    width: 32px;
+    height: 32px;
+}
+
+h2 {
+    color: var(--main-color);
+    margin-bottom: 0;
+}
+
+h1, h2, h3, p {
+    font-family: 'Merriweather', serif;
 }
