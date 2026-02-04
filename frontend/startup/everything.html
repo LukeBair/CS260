@@ -21,7 +21,6 @@
 
 <main id="content">
     <div id="list-container">
-        <h2 id="section-title">Select a section</h2>
         <div id="items-list"></div>
     </div>
 
@@ -30,7 +29,7 @@
     </label>
 
     <div id="ai-suggestion-box">
-        <p>ai input about descrepency goes here. will highlihgt section its talking about.</p>
+        <p>ai input about descrepency goes here. will highlight section its talking about.</p>
         <div>
             <a href="#" onclick="loadSection('characters'); return false;">> Characters</a>
             <br><br>
@@ -76,7 +75,6 @@
     };
 
     // Cache DOM elements
-    const sectionTitle   = document.getElementById("section-title");
     const itemsList      = document.getElementById("items-list");
     const chapterInput   = document.getElementById("chapter-input");
     const navButtons     = document.querySelectorAll("#sidebar button[data-section]");
@@ -90,7 +88,6 @@
     }
 
     function loadSection(section, autoSelectFirst = false) {
-        sectionTitle.textContent = section.charAt(0).toUpperCase() + section.slice(1);
         clearList();
 
         // Toggle AI suggestion box visibility
@@ -121,13 +118,13 @@
             itemsList.appendChild(btn);
 
             if (index === 0) firstEntry = entry;
+            if (index === 0) firstEntry = entry;
         });
 
         // Auto-select first if requested (e.g. on initial load)
         if (autoSelectFirst && firstEntry) {
             chapterInput.value = firstEntry.content;
             itemsList.querySelector("button").classList.add("selected");
-            sectionTitle.textContent += ` – ${firstEntry.title}`;
         } else {
             chapterInput.value = defaultText;
         }

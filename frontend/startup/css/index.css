@@ -7,20 +7,22 @@
 
 .container {
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
 }
 
 .login-column {
-    flex: 0 0 30%;
+    flex: 1 1 300px;
     padding: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    min-width: 300px;
 }
 
 .header-column {
-    flex: 0 0 70%;
+    flex: 2 1 500px;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -33,6 +35,7 @@
     background-repeat: no-repeat;
     color: white;
     position: relative;
+    min-width: 300px;
 }
 
 
@@ -80,6 +83,7 @@
 .login-container label {
     color: black;
     margin-bottom: 5px;
+    font-family: 'Alegreya', serif;
 }
 
 .login-container input {
@@ -88,6 +92,8 @@
     background-color: var(--background-color);
     border: 3px solid var(--accent-color);
     border-radius: 5px;
+    font-family: 'Alegreya', serif;
+    font-size: 14px;
 }
 
 .login-container button {
