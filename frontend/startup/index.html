@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Mythril Login</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body style="display: flex; height: 100vh; margin: 0;">
+<body class="flex-body">
 
-    <div class="container" style="display: flex; width: 100%;">
+    <div class="container">
 
         <!-- Left Column: Login Form -->
-        <div class="login-column" style="flex: 1; padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <div class="login-column">
             <div class="login-container">
                 <form action="/login" method="post">
                     <label for="username">Username:</label>
@@ -31,10 +32,10 @@
         </div>
 
         <!-- Right Column: Header/Branding -->
-        <div class="header-column" style="flex: 1; padding: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+        <div class="header-column">
             <div class="header-thingy">
                 <!-- background image goes here -->
-                <img src="dummy_background.jpg" alt="background" style="width:40%;height:40%;">
+                <img src="dummy_background.jpg" alt="background" class="header-img">
                 <h1>Mythril</h1>
                 <h3>Where stories are forged</h3>
                 <p><a href="https://github.com/LukeBair/CS260">https://github.com/LukeBair/CS260</a></p>

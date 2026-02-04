@@ -3,35 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Mythril</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-<nav id="sidebar" style="background: lightgray; padding:10px; display: flex; flex-direction: column; position: fixed; height: 100%; width: 130px; align-items: center; row-gap: 30px">
-    <button data-section="story"     style="width: 95px; height: 60px">Story</button>
-    <button data-section="characters" style="width: 95px; height: 60px">Characters</button>
-    <button data-section="locations"  style="width: 95px; height: 60px">Locations</button>
-    <button data-section="props"      style="width: 95px; height: 60px">Props</button>
-    <button data-section="history"    style="width: 95px; height: 60px">History</button>
+<nav id="sidebar">
+    <button data-section="story"     class="nav-button">Story</button>
+    <button data-section="characters" class="nav-button">Characters</button>
+    <button data-section="locations"  class="nav-button">Locations</button>
+    <button data-section="props"      class="nav-button">Props</button>
+    <button data-section="history"    class="nav-button">History</button>
 
-    <button data-section="account" style="width: 95px; height: 60px; margin-top:35vh;">Account</button>
+    <button data-section="account" class="nav-button account-button">Account</button>
 </nav>
 
-<main id="content" style="margin-left:150px; padding:10px; display:flex; flex-direction:row; column-gap:20px;">
-    <div id="list-container" style="display:flex; flex-direction:column; min-width:220px;">
+<main id="content">
+    <div id="list-container">
         <h2 id="section-title">Select a section</h2>
         <div id="items-list"></div>
     </div>
 
     <label>
-        <textarea id="chapter-input" style="width: 300px; height: 400px; margin-top:20px; resize: none;" readonly></textarea>
+        <textarea id="chapter-input" readonly></textarea>
     </label>
 
-    <div id="ai-suggestion-box" style="width: 200px; height: 200px; margin-top:20px; padding: 10px; display: flex; flex-direction: column; justify-content: space-between;">
+    <div id="ai-suggestion-box">
         <p>ai input about descrepency goes here. will highlihgt section its talking about.</p>
         <div>
             <a href="#" onclick="loadSection('characters'); return false;">> Characters</a>
             <br><br>
-            <button style="width: 100%; padding: 5px;">Resolve</button>
+            <button class="resolve-button">Resolve</button>
         </div>
     </div>
 
@@ -99,7 +100,7 @@
 
         const entries = worldData[section] || [];
         if (entries.length === 0) {
-            itemsList.innerHTML = "<p style='color:#777;'>No entries yet.</p>";
+            itemsList.innerHTML = "<p class='no-entries'>No entries yet.</p>";
             chapterInput.value = defaultText;
             return;
         }
@@ -108,12 +109,12 @@
         entries.forEach((entry, index) => {
             const btn = document.createElement("button");
             btn.textContent = entry.title;
-            btn.style.cssText = "width:100%; margin:6px 0; padding:12px; text-align:left; border:1px solid #ccc; background:#f9f9f9; cursor:pointer;";
+            btn.className = "list-item-button";
             btn.onclick = () => {
                 chapterInput.value = entry.content;
                 // Highlight selected
-                document.querySelectorAll("#items-list button").forEach(b => b.style.background = "#f9f9f9");
-                btn.style.background = "#e0e0ff";
+                document.querySelectorAll("#items-list button").forEach(b => b.classList.remove("selected"));
+                btn.classList.add("selected");
             };
             itemsList.appendChild(btn);
 
@@ -124,8 +125,8 @@
         if (autoSelectFirst && firstEntry) {
             chapterInput.value = firstEntry.content;
             // Highlight the first button
-            itemsList.querySelector("button").style.background = "#e0e0ff";
-            sectionTitle.textContent += ` – ${firstEntry.title}`;  // e.g. "Story – Chapter 1: The Shattering"
+            itemsList.querySelector("button").classList.add("selected");
+            sectionTitle.textContent += ` – ${firstEntry.title}`;
         } else {
             chapterInput.value = defaultText;
         }

@@ -3,19 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<nav id="sidebar" style="background: lightgray; padding:10px; display: flex; flex-direction: column; position: fixed; height: 100%; width: 130px; align-items: center; row-gap: 30px">
-    <button data-section="story"     style="width: 95px; height: 60px">Story</button>
-    <button data-section="characters" style="width: 95px; height: 60px">Characters</button>
-    <button data-section="locations"  style="width: 95px; height: 60px">Locations</button>
-    <button data-section="props"      style="width: 95px; height: 60px">Props</button>
-    <button data-section="history"    style="width: 95px; height: 60px">History</button>
+<nav id="sidebar">
+    <button data-section="story"     class="nav-button">Story</button>
+    <button data-section="characters" class="nav-button">Characters</button>
+    <button data-section="locations"  class="nav-button">Locations</button>
+    <button data-section="props"      class="nav-button">Props</button>
+    <button data-section="history"    class="nav-button">History</button>
 
-    <button data-section="account" style="width: 95px; height: 60px; margin-top:35vh;">Account</button>
+    <button data-section="account" class="nav-button account-button">Account</button>
 </nav>
 
-<main style="margin-left: 150px; padding: 10px;">
+<main class="main-content">
     <h2>Account Settings</h2>
     <p>Manage your account details and preferences here.</p>
     <br><br>
