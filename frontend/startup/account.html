@@ -25,16 +25,16 @@
         <span>Locations</span>
     </button>
     <button data-section="props" class="nav-button">
-        <img src="work-in-progress.png" alt="story icon" class="sidebar-image">
+        <img src="chest.png" alt="story icon" class="sidebar-image">
         <span>Props</span>
     </button>
     <button data-section="history" class="nav-button">
-        <img src="work-in-progress.png" alt="story icon" class="sidebar-image">
+        <img src="hour-glass.png" alt="story icon" class="sidebar-image">
         <span>History</span>
     </button>
 
     <button data-section="account" class="nav-button account-button">
-        <img src="work-in-progress.png" alt="story icon" class="sidebar-image">
+        <img src="cog-wheel-silhouette.png" alt="story icon" class="sidebar-image">
         <span>Account</span>
     </button>
 </nav>
@@ -62,11 +62,16 @@
         const section = btn.dataset.section;
 
         if (section && section !== 'account') {
-            window.location.href = `everything.html`;
+            window.location.href = `everything.html?section=${section}`;
         }
     }
 
     navButtons.forEach(btn => btn.addEventListener("click", handleNav));
+
+    function logout() {
+        window.location.href = `index.html`;
+    }
 </script>
+<button id="logout-button" onclick="logout()">Logout</button>
 </body>
 </html>
