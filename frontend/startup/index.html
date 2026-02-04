@@ -13,12 +13,14 @@
         <div class="login-column">
             <div class="login-container">
                 <form action="/login" method="post">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" required>
-                    <br><br>
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                    <br><br> <!-- brs are temp until styling -->
+                    <div class="form-group">
+                        <label for="username">Username:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
                     <button type="submit" onclick="handleLogin()">Login</button>
 
                     <script>
@@ -35,10 +37,9 @@
         <div class="header-column">
             <div class="header-thingy">
                 <!-- background image goes here -->
-                <img src="dummy_background.jpg" alt="background" id="header-img">
                 <h1>Mythril</h1>
                 <h3>Where stories are forged</h3>
-                <p><a href="https://github.com/LukeBair/CS260">https://github.com/LukeBair/CS260</a></p>
+                <p class="top-right-link"><a href="https://github.com/LukeBair/CS260">https://github.com/LukeBair/CS260</a></p>
             </div>
         </div>
 
