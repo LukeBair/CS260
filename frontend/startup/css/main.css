@@ -1,6 +1,9 @@
 :root {
     --background-color: #F4F4E7;
     --accent-color: #93A197;
+    --main-color: #DCBB78;
+    --accent-color-2: #9D7579;
+    --dark-background-color: #383437;
 }
 
 body {

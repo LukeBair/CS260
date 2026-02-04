@@ -126,7 +126,6 @@
         // Auto-select first if requested (e.g. on initial load)
         if (autoSelectFirst && firstEntry) {
             chapterInput.value = firstEntry.content;
-            // Highlight the first button
             itemsList.querySelector("button").classList.add("selected");
             sectionTitle.textContent += ` – ${firstEntry.title}`;
         } else {
@@ -148,7 +147,6 @@
         }
     }
 
-    // Attach click handlers
     navButtons.forEach(btn => btn.addEventListener("click", handleNav));
 
     function autoLoadStory() {
