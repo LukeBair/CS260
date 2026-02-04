@@ -107,3 +107,34 @@
     margin-top: 10px;
     font-family: 'Alegreya', serif;
 }
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .header-column {
+        order: 1;
+        min-height: 200px;
+        flex: none;
+        width: 100%;
+    }
+
+    .login-column {
+        order: 2;
+        flex: none;
+        width: 100%;
+    }
+
+    .header-thingy {
+        padding-bottom: 2rem;
+        padding-top: 2rem;
+    }
+
+    .top-right-link {
+        top: unset;
+        bottom: 10px;
+        left: 10px;
+        right: unset;
+    }
+}

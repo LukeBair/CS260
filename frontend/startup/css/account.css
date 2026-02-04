@@ -50,3 +50,20 @@ label {
     font-size: 16px;
     font-family: 'Alegreya', serif;
 }
+
+@media (max-width: 768px) {
+    #main-content {
+        margin-left: 0; /* Remove left margin on mobile */
+        margin-bottom: 80px; /* Make space for fixed bottom sidebar */
+    }
+
+    #logout-button {
+        bottom: 90px; /* Position above the fixed bottom sidebar (approx. 70px height + 20px spacing) */
+        right: 10px; /* Adjust right position for mobile */
+    }
+
+    #change-password-form {
+        width: auto; /* Allow form to take full width */
+        padding: 10px;
+    }
+}

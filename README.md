@@ -98,3 +98,20 @@ in the future:
   - hidden docs for gemini integration, mcp?
 - PlateJS replacement for textareas
   - md to epub conversions??
+
+## CSS Deliverable
+Visually Appealing Layout: 
+- used a color picking site to pick complimenting colors that i felt fit the project
+- used flexbox for layout
+CSS framework:
+- pure.css for text areas, shoulda use this sooner
+All elements were styled with css
+window responsiveness is likely limited, 
+imported font: Alegreya from google fonts
+used multiple class and id selectors. media 
+
+things to work on in the future:
+- mobile styling specifically for chapter/character/etc selection, this app doesnt work great on mobile, but 
+navigating the page to see information should be a bit smoother.
+- text area setup, when transfering to react, use a md text area equivalent.
+- backend features
