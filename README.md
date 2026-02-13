@@ -111,7 +111,13 @@ imported font: Alegreya from google fonts
 used multiple class and id selectors. media 
 
 things to work on in the future:
-- mobile styling specifically for chapter/character/etc selection, this app doesnt work great on mobile, but 
+- mobile styling specifically for chapter/character/etc selection, this app doesnt work great on mobile, but
 navigating the page to see information should be a bit smoother.
 - text area setup, when transfering to react, use a md text area equivalent.
 - backend features
+
+## React Part 1 Deliverable
+- Multiple React components - Login, Account, Everything (main layout), Story, Characters, Locations, Props, History
+- React Router - routes between login (`/`), project pages (`/everything/*`), and account (`/account`). nested routes under Everything for each section (story, characters, locations, props, history)
+  - nested routes will become reactive in part 2
+- Sidebar layout with NavLink for active styling, shared across all project/account pages using `<Outlet />`, could become reactive
