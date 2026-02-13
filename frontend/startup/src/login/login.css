@@ -1,0 +1,140 @@
+#flex-body {
+    font-family: 'Alegreya', serif;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.login-column {
+    flex: 1 1 300px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 300px;
+}
+
+.header-column {
+    flex: 2 1 500px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-image: url('/dummy_background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    position: relative;
+    min-width: 300px;
+}
+
+
+.top-right-link {
+    position: absolute;
+    top: 10px;
+    right: 30px;
+    word-break: break-all;
+}
+
+.top-right-link a {
+    color: var(--accent-color-2);
+}
+
+.login-container {
+    background: #F4F4E7;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 320px;
+    width: 100%;
+}
+
+.header-thingy {
+    padding-bottom: 15rem;
+    text-align: left;
+}
+
+.header-thingy h1 {
+    font-size: 6rem;
+    font-weight: bold;
+    color: var(--background-color);
+    margin-bottom: -5px;
+}
+
+.header-thingy p {
+    color: var(--background-color);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.login-container label {
+    color: black;
+    margin-bottom: 5px;
+    font-family: 'Alegreya', serif;
+}
+
+.login-container input {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--background-color);
+    border: 3px solid var(--accent-color);
+    border-radius: 5px;
+    font-family: 'Alegreya', serif;
+    font-size: 14px;
+}
+
+.login-container button {
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #DCBB78;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    margin-top: 10px;
+    font-family: 'Alegreya', serif;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .header-column {
+        order: 1;
+        min-height: 200px;
+        flex: none;
+        width: 100%;
+    }
+
+    .login-column {
+        order: 2;
+        flex: none;
+        width: 100%;
+    }
+
+    .header-thingy {
+        padding-bottom: 2rem;
+        padding-top: 2rem;
+    }
+
+    .top-right-link {
+        top: unset;
+        bottom: 10px;
+        left: 10px;
+        right: unset;
+    }
+}
