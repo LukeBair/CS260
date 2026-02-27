@@ -80,11 +80,6 @@
 .list-item-button.selected {
     background: var(--accent-color-2);
 }
-
-#attribution-button, #attribution-bar {
-    display: none;
-}
-
 /* Media query for mobile */
 @media (max-width: 768px) {
     #sidebar {

@@ -15,7 +15,7 @@ export function Everything() {
   const location = useLocation();
   const isStory = location.pathname.endsWith('/story') || location.pathname === '/everything';
   const [description, setDescription] = useState('Select an entry to view its description.');
-
+  const [attributionsVisible, setAttributionVisible] = useState(false);
   return (
     <main id="content">
       <div id="page-content">
@@ -39,10 +39,10 @@ export function Everything() {
         </div>
       </div>
 
-      <button id="attribution-button" title="Attributions">
+      <button id="attribution-button" title="Attributions" onClick={() => setAttributionVisible(!attributionsVisible)}>
         <img src="/information-button.png" alt="Info" className="sidebar-image" />
       </button>
-      <div id="attribution-bar">
+      <div style={{ display: attributionsVisible ? 'block' : 'none'}}>
         <h3>Attributions</h3>
         <p>Icons sourced from Flaticon:</p>
         <ul>
