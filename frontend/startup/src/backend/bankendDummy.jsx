@@ -4,7 +4,7 @@ export function loginDummy() {
     return true;
 }
 
-export function saveAccountChanges() {
+export function saveAccountChanges(username, email) {
     console.log('Saving:', { username, email });
     setTimeout(() => {
         console.log('Saved!');
