@@ -1,4 +1,4 @@
-import {worldDataDummy} from "../storage/storageDummy";
+import {userDataDummy, worldDataDummy} from "../storage/storageDummy";
 
 export function loginDummy() {
     return true;
@@ -22,4 +22,22 @@ export function loadUserStoryData() {
 
 function communicateWithAI() {
     console.log("Communicating with AI");
+}
+export function dummyLogin(username, password) {
+    const storedValues = userDataDummy;
+    if (storedValues.users.some(user => user.username === username && user.password === password)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+export function dummyCreate(username, password) {
+    const storedValues = userDataDummy;
+    if (storedValues.users.some(user => user.username === username)) {
+        return false;
+    } else {
+        storedValues.users.push({username: username, password: password});
+        return true;
+    }
 }

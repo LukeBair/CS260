@@ -25,3 +25,9 @@ export const worldDataDummy = {
         { name: 'Year 1241 – The Unmaking', desc: 'Select an entry to view its description.' },
     ],
 };
+
+export const userDataDummy = {
+    users: [
+        { username: 'test', password: 'abc123'}
+    ]
+}

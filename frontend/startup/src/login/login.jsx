@@ -1,17 +1,24 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
+import {dummyCreate, dummyLogin} from "../backend/bankendDummy";
 
 export function Login() {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
+  const [loggingIn, setLoggingIn] = useState(true);
 
   function handleLogin() {
     // TODO: replace with real fetch() call to backend
     setTimeout(() => {
-      navigate('/everything');
+      if (loggingIn && dummyLogin(username, password)) {
+        navigate('/everything');
+      } else if (!loggingIn && dummyCreate(username, password)) {
+        navigate('/everything');
+      } else {
+        alert('Invalid username or password');
+      }
     }, 500);
   }
 
@@ -30,13 +37,14 @@ export function Login() {
             <form onSubmit={(e) => e.preventDefault()}>
               <div className="form-group">
                 <label htmlFor="username">Username:</label>
-                <input type="text" id="username" name="username" required onChange={(e)=> setUsername(e)}/>
+                <input type="text" id="username" name="username" required onChange={(e)=> setUsername(e.target.value)}/>
               </div>
               <div className="form-group">
                 <label htmlFor="password">Password:</label>
-                <input type="password" id="password" name="password" required onChange={(e)=>setPassword(e)}/>
+                <input type="password" id="password" name="password" required onChange={(e)=>setPassword(e.target.value)}/>
+                <a onClick={() => {setLoggingIn(!loggingIn)}}>Create Account</a>
               </div>
-              <button type="button" onClick={handleLogin}>Login</button>
+              <button type="button" onClick={handleLogin}>{loggingIn ? 'Login' : 'Create Account'}</button>
             </form>
           </div>
         </div>
