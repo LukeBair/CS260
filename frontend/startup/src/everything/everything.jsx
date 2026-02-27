@@ -26,7 +26,7 @@ export function Everything() {
         </div>
 
         <label>
-          <textarea id="chapter-input" readOnly value={description} />
+          <textarea id="chapter-input" value={description}/>
         </label>
 
         <div id="ai-suggestion-box" className={isStory ? 'visible' : ''}>
