@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import './everything.css';
 
@@ -14,18 +14,19 @@ import './everything.css';
 export function Everything() {
   const location = useLocation();
   const isStory = location.pathname.endsWith('/story') || location.pathname === '/everything';
+  const [description, setDescription] = useState('Select an entry to view its description.');
 
   return (
     <main id="content">
       <div id="page-content">
         <div id="list-container">
           <div id="items-list">
-            <Outlet />
+            <Outlet context={{ setDescription }} />
           </div>
         </div>
 
         <label>
-          <textarea id="chapter-input" readOnly defaultValue="Select an entry to view its description." />
+          <textarea id="chapter-input" readOnly value={description} />
         </label>
 
         <div id="ai-suggestion-box" className={isStory ? 'visible' : ''}>

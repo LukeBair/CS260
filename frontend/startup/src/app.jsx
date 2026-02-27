@@ -2,26 +2,13 @@ import React from 'react';
 import { BrowserRouter, NavLink, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 import { Login } from './login/login';
 import { Everything } from './everything/everything';
-import { Story } from './everything/story';
-import { Characters } from './everything/characters';
-import { Locations } from './everything/locations';
-import { Props } from './everything/props';
-import { History } from './everything/history';
 import { Account } from './account/account';
-import './app.css';
 import {EntryList} from "./everything/EntryList";
+import {loadUserStoryData} from "./backend/bankendDummy";
+import './app.css';
 
 function SidebarLayout() {
-  return (
-      <Route path="/everything" element={<Everything />}>
-        <Route index element={<Navigate to="story" replace />} />
-        <Route path="story" element={<EntryList entries={storyEntries} />} />
-        <Route path="characters" element={<EntryList entries={characterEntries} />} />
-        <Route path="locations" element={<EntryList entries={locationEntries} />} />
-        <Route path="props" element={<EntryList entries={propEntries} />} />
-        <Route path="history" element={<EntryList entries={historyEntries} />} />
-      </Route>
-  );
+  return <Outlet />;
 }
 
 function NotFound() {
@@ -29,6 +16,7 @@ function NotFound() {
 }
 
 export default function App() {
+  const entries = loadUserStoryData();
   return (
     <BrowserRouter>
       <Routes>
@@ -36,11 +24,11 @@ export default function App() {
         <Route element={<SidebarLayout />}>
           <Route path="/everything" element={<Everything />}>
             <Route index element={<Navigate to="story" replace />} />
-            <Route path="story" element={<Story />} />
-            <Route path="characters" element={<Characters />} />
-            <Route path="locations" element={<Locations />} />
-            <Route path="props" element={<Props />} />
-            <Route path="history" element={<History />} />
+            <Route path="story" element={<EntryList entries={entries.story} />} />
+            <Route path="characters" element={<EntryList entries={entries.characters} />} />
+            <Route path="locations" element={<EntryList entries={entries.locations} />} />
+            <Route path="props" element={<EntryList entries={entries.props} />} />
+            <Route path="history" element={<EntryList entries={entries.history} />} />
           </Route>
           <Route path="/account" element={<Account />} />
         </Route>
