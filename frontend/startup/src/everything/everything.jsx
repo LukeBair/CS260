@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import './everything.css';
 
@@ -11,22 +11,57 @@ import './everything.css';
 // - WebSocket connection for live user updates + ai input
 // - Third party call to Gemini API
 
-export function Everything() {
+export function Everything({ entries, setEntries }) {
   const location = useLocation();
-  const isStory = location.pathname.endsWith('/story') || location.pathname === '/everything';
-  const [description, setDescription] = useState('Select an entry to view its description.');
+  const section = location.pathname.split('/').pop();
+  const isStory = section === 'story' || location.pathname === '/everything';
+  const [selectedIndex, setSelectedIndex] = useState(null);
   const [attributionsVisible, setAttributionVisible] = useState(false);
+
+  useEffect(() => {
+    setSelectedIndex(null);
+  }, [section]);
+
+  // instead of getting the description directly I get the data and then the
+  // description using an index. this probably will change when an actual
+  // backend is implemented
+  const description = selectedIndex !== null
+    ? entries[section]?.[selectedIndex]?.desc ?? ''
+    : 'Select an entry to view its description.';
+
+  //
+  function handleDescriptionChange(e) {
+    const newText = e.target.value;
+
+    setEntries(function(previous_state) {
+      // update only the selected entry's desc in the current section
+      // basically just a for loop but fancy
+      const updatedSection = previous_state[section].map(function(entry, i) {
+        if (i === selectedIndex) {
+          return { ...entry, desc: newText };
+        }
+        return entry;
+      });
+
+      // return all sections, overwriting just the current one
+      return {
+        ...previous_state,
+        [section]: updatedSection
+      };
+    });
+  }
+
   return (
     <main id="content">
       <div id="page-content">
         <div id="list-container">
           <div id="items-list">
-            <Outlet context={{ setDescription }} />
+            <Outlet context={{ setSelectedIndex }} />
           </div>
         </div>
 
         <label>
-          <textarea id="chapter-input" value={description}/>
+          <textarea id="chapter-input" value={description} onChange={handleDescriptionChange}/>
         </label>
 
         <div id="ai-suggestion-box" className={isStory ? 'visible' : ''}>

@@ -2,12 +2,12 @@ import React, {useState} from "react";
 import {useOutletContext} from "react-router-dom";
 
 export function EntryList({ entries }) {
-    const { setDescription } = useOutletContext();
+    const { setSelectedIndex } = useOutletContext();
     const [selected, setSelected] = useState(null);
 
     function select(i) {
         setSelected(i);
-        setDescription(entries[i].desc);
+        setSelectedIndex(i);
     }
 
     return entries.map((entry, index) => (

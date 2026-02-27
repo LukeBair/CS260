@@ -60,7 +60,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route element={<SidebarLayout />}>
-          <Route path="/everything" element={<Everything />}>
+          <Route path="/everything" element={<Everything entries={entries} setEntries={setEntries} />}>
             <Route index element={<Navigate to="story" replace />} />
             <Route path="story" element={<EntryList entries={entries.story} />} />
             <Route path="characters" element={<EntryList entries={entries.characters} />} />
