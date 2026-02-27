@@ -38,7 +38,7 @@ export function Account() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <button id="change-password-button" onClick={saveAccountChanges(username, email)}>Change Password</button>
+        <button id="change-password-button" onClick={() => saveAccountChanges(username, email)}>Change Password</button>
       </div>
       <button id="logout-button" onClick={logout}>Logout</button>
     </main>

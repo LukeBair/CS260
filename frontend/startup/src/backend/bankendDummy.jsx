@@ -20,9 +20,6 @@ export function loadUserStoryData() {
     });
 }
 
-function communicateWithAI() {
-    console.log("Communicating with AI");
-}
 export function dummyLogin(username, password) {
     const storedValues = userDataDummy;
     if (storedValues.users.some(user => user.username === username && user.password === password)) {

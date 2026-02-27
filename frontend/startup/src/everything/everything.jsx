@@ -63,21 +63,12 @@ export function Everything({ entries, setEntries }) {
         <label>
           <textarea id="chapter-input" value={description} onChange={handleDescriptionChange}/>
         </label>
-
-        <div id="ai-suggestion-box" className={isStory ? 'visible' : ''}>
-          <p>ai input about discrepancy goes here. will highlight section its talking about.</p>
-          <div>
-            <a href="#">&gt; Source: Joe</a>
-            <br /><br />
-            <button className="resolve-button">Resolve</button>
-          </div>
-        </div>
       </div>
 
       <button id="attribution-button" title="Attributions" onClick={() => setAttributionVisible(!attributionsVisible)}>
         <img src="/information-button.png" alt="Info" className="sidebar-image" />
       </button>
-      <div style={{ display: attributionsVisible ? 'block' : 'none'}}>
+      <div id="attribution-bar" className={attributionsVisible ? 'visible' : ''}>
         <h3>Attributions</h3>
         <p>Icons sourced from Flaticon:</p>
         <ul>
