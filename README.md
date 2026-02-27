@@ -121,3 +121,11 @@ navigating the page to see information should be a bit smoother.
 - React Router - routes between login (`/`), project pages (`/everything/*`), and account (`/account`). nested routes under Everything for each section (story, characters, locations, props, history)
   - nested routes will become reactive in part 2
 - Sidebar layout with NavLink for active styling, shared across all project/account pages using `<Outlet />`, could become reactive
+
+## React Part 2 Deliverable
+- All pages use reactive behaviors to update user inputs
+- Consolidated pages into everything.jsx, using a shared function "EntryList" to keep track of chapters and chapter contexts.
+- fixed attributes to render properly
+- dummy login logic, currently no security on it though
+- EntryList data is currently shared, not per user.
+- UseState used to keep track of user input, use effect to asynchronously get data from dummy files.
