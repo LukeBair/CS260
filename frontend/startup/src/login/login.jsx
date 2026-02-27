@@ -1,9 +1,12 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
 
 export function Login() {
   const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
 
   function handleLogin() {
     navigate('/everything');
@@ -24,11 +27,11 @@ export function Login() {
             <form onSubmit={(e) => e.preventDefault()}>
               <div className="form-group">
                 <label htmlFor="username">Username:</label>
-                <input type="text" id="username" name="username" required />
+                <input type="text" id="username" name="username" required onChange={(e)=> setUsername(e)}/>
               </div>
               <div className="form-group">
                 <label htmlFor="password">Password:</label>
-                <input type="password" id="password" name="password" required />
+                <input type="password" id="password" name="password" required onChange={(e)=>setPassword(e)}/>
               </div>
               <button type="button" onClick={handleLogin}>Login</button>
             </form>
