@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, NavLink, Route, Routes, Navigate, Outlet } from 'react-router-dom';
 import { Login } from './login/login';
 import { Everything } from './everything/everything';
@@ -47,7 +47,14 @@ function NotFound() {
 }
 
 export default function App() {
-  const entries = loadUserStoryData();
+  const [entries, setEntries] = useState(null);
+
+  useEffect(() => {
+    loadUserStoryData().then((data) => setEntries(data));
+  }, []);
+
+  if (!entries) return <p>Loading...</p>;
+
   return (
     <BrowserRouter>
       <Routes>

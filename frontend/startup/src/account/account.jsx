@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './account.css';
+import {saveAccountChanges} from "../backend/bankendDummy";
 
 export function Account() {
   const navigate = useNavigate();
@@ -10,10 +11,6 @@ export function Account() {
 
   function logout() {
     navigate('/');
-  }
-
-  function saveChanges() {
-    console.log('Saving:', { username, email });
   }
 
   return (
@@ -41,7 +38,7 @@ export function Account() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <button id="change-password-button">Change Password</button>
+        <button id="change-password-button" onClick={saveAccountChanges}>Change Password</button>
       </div>
       <button id="logout-button" onClick={logout}>Logout</button>
     </main>

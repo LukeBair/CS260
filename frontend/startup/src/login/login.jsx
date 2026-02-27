@@ -9,7 +9,10 @@ export function Login() {
 
 
   function handleLogin() {
-    navigate('/everything');
+    // TODO: replace with real fetch() call to backend
+    setTimeout(() => {
+      navigate('/everything');
+    }, 500);
   }
 
   return (
