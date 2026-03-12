@@ -21,6 +21,10 @@ export function Everything({ entries, setEntries }) {
     ? entries[section]?.[selectedIndex]?.desc ?? ''
     : 'Select an entry to view its description.';
 
+  const chapterName = selectedIndex !== null
+    ? entries[section]?.[selectedIndex]?.name ?? ''
+    : 'default chapter name';
+
   function handleAddEntry() {
     setEntries(function(previous_state) {
       const updated = {
@@ -30,6 +34,44 @@ export function Everything({ entries, setEntries }) {
       saveUserStoryData(updated);
       return updated;
     });
+  }
+
+  function handleTitleChange(e) {
+    const newTitle = e.target.value;
+
+    setEntries(function(previous_state) {
+      const updatedSection = previous_state[section].map(function(entry, i) {
+        if (i === selectedIndex) {
+          return { ...entry, name: newTitle };
+        }
+        return entry;
+      });
+
+      const updated = {
+        ...previous_state,
+        [section]: updatedSection
+      };
+      saveUserStoryData(updated);
+      return updated;
+    });
+  }
+
+  function handleChapterRemove() {
+    if (selectedIndex === null) return;
+
+    setEntries(function(previous_state) {
+      const updatedSection = previous_state[section].filter(function(entry, i) {
+        return i !== selectedIndex;
+      });
+
+      const updated = {
+        ...previous_state,
+        [section]: updatedSection
+      };
+      saveUserStoryData(updated);
+      return updated;
+    });
+    setSelectedIndex(null);
   }
 
   function handleDescriptionChange(e) {
@@ -63,10 +105,15 @@ export function Everything({ entries, setEntries }) {
             <Outlet context={{ setSelectedIndex, addEntry: handleAddEntry }} />
           </div>
         </div>
-
-        <label>
-          <textarea id="chapter-input" value={description} onChange={handleDescriptionChange}/>
-        </label>
+        <div id="chapter-container">
+          <div id="title-container">
+            <input id="chapter-title" onChange={handleTitleChange} type="text" value={chapterName}/>
+            <button id="remove-chapter" onClick={handleChapterRemove}>x</button>
+          </div>
+          <label>
+            <textarea id="chapter-input" value={description} onChange={handleDescriptionChange}/>
+          </label>
+        </div>
       </div>
 
       <button id="attribution-button" title="Attributions" onClick={() => setAttributionVisible(!attributionsVisible)}>
