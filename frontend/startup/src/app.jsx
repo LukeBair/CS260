@@ -4,7 +4,8 @@ import { Login } from './login/login';
 import { Everything } from './everything/everything';
 import { Account } from './account/account';
 import {EntryList} from "./everything/EntryList";
-import {loadUserStoryData} from "./backend/bankendDummy";
+import {loadUserStoryData, getCurrentUser} from "./backend/bankendDummy";
+import { worldDataTemplate } from './storage/storageDummy';
 import './app.css';
 
 function SidebarLayout() {
@@ -47,18 +48,20 @@ function NotFound() {
 }
 
 export default function App() {
-  const [entries, setEntries] = useState(null);
+  const [entries, setEntries] = useState(worldDataTemplate);
 
   useEffect(() => {
-    loadUserStoryData().then((data) => setEntries(data));
+    const data = loadUserStoryData();
+    if (data) setEntries(data);
   }, []);
-
-  if (!entries) return <p>Loading...</p>;
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Login onLogin={() => {
+          const data = loadUserStoryData();
+          if (data) setEntries(data);
+        }} />} />
         <Route element={<SidebarLayout />}>
           <Route path="/everything" element={<Everything entries={entries} setEntries={setEntries} />}>
             <Route index element={<Navigate to="story" replace />} />

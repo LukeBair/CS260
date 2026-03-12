@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './account.css';
-import {saveAccountChanges} from "../backend/bankendDummy";
+import {saveAccountChanges, logout, getCurrentUser} from "../backend/bankendDummy";
 
 export function Account() {
   const navigate = useNavigate();
 
-  const [username, setUsername] = useState('current_username');
+  const [username, setUsername] = useState(getCurrentUser() || '');
   const [email, setEmail] = useState('user@example.com');
 
-  function logout() {
+  function handleLogout() {
+    logout();
     navigate('/');
   }
 
@@ -38,9 +39,9 @@ export function Account() {
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <button id="change-password-button" onClick={() => saveAccountChanges(username, email)}>Change Password</button>
+        <button id="change-password-button" onClick={() => saveAccountChanges({ username, email })}>Save Changes</button>
       </div>
-      <button id="logout-button" onClick={logout}>Logout</button>
+      <button id="logout-button" onClick={handleLogout}>Logout</button>
     </main>
   );
 }
