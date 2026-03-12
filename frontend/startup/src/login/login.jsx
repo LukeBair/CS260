@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
-import {dummyCreate, dummyLogin} from "../backend/bankendDummy";
+import {login, createAccount} from "../backend/bankendDummy";
 
 export function Login() {
   const navigate = useNavigate();
@@ -9,17 +9,15 @@ export function Login() {
   const [password, setPassword] = useState('');
   const [loggingIn, setLoggingIn] = useState(true);
 
-  function handleLogin() {
-    // TODO: replace with real fetch() call to backend
-    setTimeout(() => {
-      if (loggingIn && dummyLogin(username, password)) {
-        navigate('/everything');
-      } else if (!loggingIn && dummyCreate(username, password)) {
-        navigate('/everything');
-      } else {
-        alert('Invalid username or password');
-      }
-    }, 500);
+  async function handleLogin() {
+    const success = loggingIn
+      ? await login(username, password)
+      : await createAccount(username, password);
+    if (success) {
+      navigate('/everything');
+    } else {
+      alert(loggingIn ? 'Invalid username or password' : 'Username already exists');
+    }
   }
 
   return (

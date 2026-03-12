@@ -1,40 +1,44 @@
-import {userDataDummy, worldDataDummy} from "../storage/storageDummy";
+import { dbCreateUser, dbVerifyPassword, dbGetWorldData, dbSaveWorldData, dbUpdateAccount } from "../storage/storageDummy";
 
-export function loginDummy() {
+// Auth
+export async function login(username, password) {
+    const valid = await dbVerifyPassword(username, password);
+    if (!valid) return false;
+    localStorage.setItem('currentUser', username);
     return true;
 }
 
-export function saveAccountChanges(username, email) {
-    console.log('Saving:', { username, email });
-    setTimeout(() => {
-        console.log('Saved!');
-    }, 500);
+export async function createAccount(username, password) {
+    const success = await dbCreateUser(username, password);
+    if (!success) return false;
+    localStorage.setItem('currentUser', username);
+    return true;
 }
 
+export function logout() {
+    localStorage.removeItem('currentUser');
+}
 
+export function getCurrentUser() {
+    return localStorage.getItem('currentUser');
+}
+
+// World data
 export function loadUserStoryData() {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve(worldDataDummy);
-        }, 500);
-    });
+    const username = getCurrentUser();
+    if (!username) return null;
+    return dbGetWorldData(username);
 }
 
-export function dummyLogin(username, password) {
-    const storedValues = userDataDummy;
-    if (storedValues.users.some(user => user.username === username && user.password === password)) {
-        return true;
-    } else {
-        return false;
-    }
+export function saveUserStoryData(worldData) {
+    const username = getCurrentUser();
+    if (!username) return false;
+    return dbSaveWorldData(username, worldData);
 }
 
-export function dummyCreate(username, password) {
-    const storedValues = userDataDummy;
-    if (storedValues.users.some(user => user.username === username)) {
-        return false;
-    } else {
-        storedValues.users.push({username: username, password: password});
-        return true;
-    }
+// Account
+export function saveAccountChanges(updates) {
+    const username = getCurrentUser();
+    if (!username) return false;
+    return dbUpdateAccount(username, updates);
 }

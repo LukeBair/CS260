@@ -50,7 +50,8 @@ export default function App() {
   const [entries, setEntries] = useState(null);
 
   useEffect(() => {
-    loadUserStoryData().then((data) => setEntries(data));
+    const data = loadUserStoryData();
+    if (data) setEntries(data);
   }, []);
 
   if (!entries) return <p>Loading...</p>;

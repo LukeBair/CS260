@@ -1,15 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+import { saveUserStoryData } from '../backend/bankendDummy';
 import './everything.css';
-
-// TODO Phase 2: Convert to React state and effects
-// - Use useState for: currentSection, selectedEntry, entries list
-// - Use useSearchParams to read/set ?section= query param
-// - Render items-list dynamically from worldData[currentSection]
-// - Toggle ai-suggestion-box visibility based on section === 'story'
-// - Attribution bar toggle with useState
-// - WebSocket connection for live user updates + ai input
-// - Third party call to Gemini API
 
 export function Everything({ entries, setEntries }) {
   const location = useLocation();
@@ -29,7 +21,6 @@ export function Everything({ entries, setEntries }) {
     ? entries[section]?.[selectedIndex]?.desc ?? ''
     : 'Select an entry to view its description.';
 
-  //
   function handleDescriptionChange(e) {
     const newText = e.target.value;
 
@@ -44,10 +35,12 @@ export function Everything({ entries, setEntries }) {
       });
 
       // return all sections, overwriting just the current one
-      return {
+      const updated = {
         ...previous_state,
         [section]: updatedSection
       };
+      saveUserStoryData(updated);
+      return updated;
     });
   }
 
