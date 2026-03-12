@@ -11,7 +11,7 @@ export function Everything({ entries, setEntries }) {
   const [attributionsVisible, setAttributionVisible] = useState(false);
 
   useEffect(() => {
-    setSelectedIndex(null);
+    setSelectedIndex(0);
   }, [section]);
 
   // instead of getting the description directly I get the data and then the
