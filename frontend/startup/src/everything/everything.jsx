@@ -21,6 +21,17 @@ export function Everything({ entries, setEntries }) {
     ? entries[section]?.[selectedIndex]?.desc ?? ''
     : 'Select an entry to view its description.';
 
+  function handleAddEntry() {
+    setEntries(function(previous_state) {
+      const updated = {
+        ...previous_state,
+        [section]: [...previous_state[section], { name: 'New Entry', desc: '' }]
+      };
+      saveUserStoryData(updated);
+      return updated;
+    });
+  }
+
   function handleDescriptionChange(e) {
     const newText = e.target.value;
 
@@ -49,7 +60,7 @@ export function Everything({ entries, setEntries }) {
       <div id="page-content">
         <div id="list-container">
           <div id="items-list">
-            <Outlet context={{ setSelectedIndex }} />
+            <Outlet context={{ setSelectedIndex, addEntry: handleAddEntry }} />
           </div>
         </div>
 
