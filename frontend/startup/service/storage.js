@@ -1,4 +1,7 @@
-const users = {};  // { username: { password, worldData } }
+const { v4: uuid } = require('uuid');
+
+const users = {};   // { username: { password, worldData } }
+const tokens = {};  // { token: username }
 
 const worldDataTemplate = {
   story: [],
@@ -34,6 +37,21 @@ async function verifyPassword(username, password) {
   return users[username].password === await hashPassword(password);
 }
 
+// Tokens
+function createToken(username) {
+  const token = uuid();
+  tokens[token] = username;
+  return token;
+}
+
+function getUserByToken(token) {
+  return tokens[token] || null;
+}
+
+function removeToken(token) {
+  delete tokens[token];
+}
+
 // World data
 function getWorldData(username) {
   if (!users[username]) return null;
@@ -58,6 +76,9 @@ module.exports = {
   getUser,
   createUser,
   verifyPassword,
+  createToken,
+  getUserByToken,
+  removeToken,
   getWorldData,
   saveWorldData,
   updateAccount,

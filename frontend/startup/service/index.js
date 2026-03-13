@@ -1,8 +1,8 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const { createUser, createToken, verifyPassword, removeToken, getWorldData, saveWorldData, getUserByToken } = require('./storage');
 const { GoogleGenAI } = require('@google/genai');
-
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -14,25 +14,67 @@ const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
 // --- Auth endpoints ---
 
+// register and login
 app.post('/api/auth/register', async (req, res) => {
-  res.json({ username: req.body.username });
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Username and password required' });
+  }
+
+  const success = await createUser(username, password);
+  if (!success) {
+    return res.status(409).json({ error: 'Username already exists' });
+  }
+
+  const token = createToken(username);
+  res.cookie('token', token, { httpOnly: true, sameSite: 'strict' });
+  res.json({ username });
 });
 
 app.post('/api/auth/login', async (req, res) => {
-  res.json({ username: req.body.username });
+  const { username, password } = req.body;
+  if (!username || !password) {
+    return res.status(400).json({ error: 'Username and password required' });
+  }
+
+  const valid = await verifyPassword(username, password);
+  if (!valid) {
+    return res.status(401).json({ error: 'Invalid username or password' });
+  }
+
+  const token = createToken(username);
+  res.cookie('token', token, { httpOnly: true, sameSite: 'strict' });
+  res.json({ username });
 });
 
 app.delete('/api/auth/logout', (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
+    removeToken(token);
+    res.clearCookie('token');
+  }
   res.json({ message: 'Logged out' });
 });
 
 // --- World data endpoints ---
 
 app.get('/api/world', (req, res) => {
-  res.json({});
+  const { token } = req.cookies;
+  if (!token) return res.status(401).json({ error: 'Not authenticated' });
+  const username = getUserByToken(token);
+  if (!username) return res.status(401).json({ error: 'Invalid token' });
+
+  res.json(getWorldData(username));
 });
 
 app.put('/api/world', (req, res) => {
+  const { token } = req.cookies;
+  if (!token) return res.status(401).json({ error: 'Not authenticated' });
+  const username = getUserByToken(token);
+  if (!username) return res.status(401).json({ error: 'Invalid token' });
+
+  const success = saveWorldData(username, req.body);
+  if (!success) return res.status(404).json({ error: 'User not found' });
   res.json({ success: true });
 });
 

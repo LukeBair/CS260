@@ -1,4 +1,3 @@
-import { dbCreateUser, dbVerifyPassword, dbGetWorldData, dbSaveWorldData, dbUpdateAccount } from "../storage/storageDummy";
 
 // Auth
 export async function login(username, password) {
