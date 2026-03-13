@@ -1,0 +1,13 @@
+{
+  "name": "startup-service",
+  "version": "1.0.0",
+  "description": "Backend service for Mythril startup",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@google/genai": "^1.44.0",
+    "express": "^5.2.1"
+  }
+}
