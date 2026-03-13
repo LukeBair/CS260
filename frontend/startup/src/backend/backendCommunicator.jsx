@@ -51,8 +51,9 @@ export async function saveUserStoryData(worldData) {
 
 // AI Search
 export async function naturalLanguageSearch(query) {
+    const context = await loadUserStoryData();
     query = "You are a story editor + continuity helper, given the authors query you will look through the story, character, location, prop, and history context to best answer their question. Be straight forward and to the point. \n\n CONTEXT"
-        + JSON.stringify(loadUserStoryData()) + "\n\n QUERY: "
+        + JSON.stringify(context) + "\n\n QUERY: "
         + query;
     const response = await fetch('/api/search', {
         method: 'POST',
