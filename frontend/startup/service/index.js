@@ -1,16 +1,43 @@
 const express = require('express');
 const path = require('path');
+const cookieParser = require('cookie-parser');
 const { GoogleGenAI } = require('@google/genai');
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 // Serve frontend static files in production
 app.use(express.static('public'));
 
 const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
-// Gemini search endpoint
+// --- Auth endpoints ---
+
+app.post('/api/auth/register', async (req, res) => {
+  res.json({ username: req.body.username });
+});
+
+app.post('/api/auth/login', async (req, res) => {
+  res.json({ username: req.body.username });
+});
+
+app.delete('/api/auth/logout', (req, res) => {
+  res.json({ message: 'Logged out' });
+});
+
+// --- World data endpoints ---
+
+app.get('/api/world', (req, res) => {
+  res.json({});
+});
+
+app.put('/api/world', (req, res) => {
+  res.json({ success: true });
+});
+
+// --- Gemini search endpoint ---
+
 app.post('/api/search', async (req, res) => {
   const { query } = req.body;
   if (!query) return res.status(400).json({ error: 'query required' });
