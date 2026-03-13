@@ -2,12 +2,18 @@
     margin-left: 120px;
     padding: 10px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 20px;
+    /*overflow: hidden;*/
+}
+
+#search-bar {
+    width: 50%;
+    height: 30px;
+    align-self: center;
 }
 
 #page-content {
-    padding-top: 32px;
     display: flex;
     flex-direction: row;
     gap: 20px;
