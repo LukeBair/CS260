@@ -1,8 +1,9 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const { createUser, createToken, verifyPassword, removeToken, getWorldData, saveWorldData, getUserByToken, updateAccount } = require('./storage');
+const { createUser, createToken, verifyPassword, removeToken, getWorldData, saveWorldData, getUserByToken, updateAccount, getCollaborators, getConnectedUsers, addCollaborator, removeCollaborator, addEditLog, getEditLog } = require('./storage');
 const { GoogleGenAI } = require('@google/genai');
+
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -14,7 +15,6 @@ const ai = process.env.GEMINI_API_KEY ? new GoogleGenAI(process.env.GEMINI_API_K
 
 // --- Auth endpoints ---
 
-// register and login
 app.post('/api/auth/register', async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {
@@ -73,8 +73,23 @@ app.put('/api/world', (req, res) => {
   const username = getUserByToken(token);
   if (!username) return res.status(401).json({ error: 'Invalid token' });
 
-  const success = saveWorldData(username, req.body);
+  const editAction = req.body._editAction;
+  const worldData = { ...req.body };
+  delete worldData._editAction;
+
+  const success = saveWorldData(username, worldData);
   if (!success) return res.status(404).json({ error: 'User not found' });
+
+  // Also save to all connected users so they share the same world
+  for (const collab of getConnectedUsers(username)) {
+    saveWorldData(collab, worldData);
+  }
+
+  // Log the edit for the user and their collaborators
+  if (editAction) {
+    addEditLog(username, editAction);
+  }
+
   res.json({ success: true });
 });
 
@@ -91,6 +106,55 @@ app.put('/api/account', (req, res) => {
   res.json({ success: true });
 });
 
+// --- Collaborator endpoints ---
+
+app.get('/api/collaborators', (req, res) => {
+  const { token } = req.cookies;
+  if (!token) return res.status(401).json({ error: 'Not authenticated' });
+  const username = getUserByToken(token);
+  if (!username) return res.status(401).json({ error: 'Invalid token' });
+
+  res.json({ collaborators: getCollaborators(username) });
+});
+
+app.post('/api/collaborators', (req, res) => {
+  const { token } = req.cookies;
+  if (!token) return res.status(401).json({ error: 'Not authenticated' });
+  const username = getUserByToken(token);
+  if (!username) return res.status(401).json({ error: 'Invalid token' });
+
+  const { collaborator } = req.body;
+  if (!collaborator) return res.status(400).json({ error: 'Collaborator username required' });
+  if (collaborator === username) return res.status(400).json({ error: 'Cannot add yourself' });
+
+  const success = addCollaborator(username, collaborator);
+  if (!success) return res.status(404).json({ error: 'User not found or already added' });
+
+  addEditLog(username, `Added ${collaborator} as collaborator`);
+  res.json({ collaborators: getCollaborators(username) });
+});
+
+app.delete('/api/collaborators/:collaborator', (req, res) => {
+  const { token } = req.cookies;
+  if (!token) return res.status(401).json({ error: 'Not authenticated' });
+  const username = getUserByToken(token);
+  if (!username) return res.status(401).json({ error: 'Invalid token' });
+
+  removeCollaborator(username, req.params.collaborator);
+  res.json({ collaborators: getCollaborators(username) });
+});
+
+// --- Edit log endpoint ---
+
+app.get('/api/edits', (req, res) => {
+  const { token } = req.cookies;
+  if (!token) return res.status(401).json({ error: 'Not authenticated' });
+  const username = getUserByToken(token);
+  if (!username) return res.status(401).json({ error: 'Invalid token' });
+
+  res.json({ edits: getEditLog(username) });
+});
+
 // --- Gemini search endpoint ---
 
 app.post('/api/search', async (req, res) => {
@@ -99,7 +163,7 @@ app.post('/api/search', async (req, res) => {
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
+      model: 'gemini-2.5-flash',
       contents: query,
     });
     res.json({ text: response.text });

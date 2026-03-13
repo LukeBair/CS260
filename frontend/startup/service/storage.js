@@ -66,6 +66,55 @@ function updateAccount(username, updates) {
   return true;
 }
 
+// Collaborators
+function getCollaborators(username) {
+  if (!users[username]) return [];
+  return users[username].collaborators || [];
+}
+
+function addCollaborator(username, collaborator) {
+  if (!users[username] || !users[collaborator]) return false;
+  if (!users[username].collaborators) users[username].collaborators = [];
+  if (users[username].collaborators.includes(collaborator)) return false;
+  users[username].collaborators.push(collaborator);
+  return true;
+}
+
+function removeCollaborator(username, collaborator) {
+  if (!users[username] || !users[username].collaborators) return false;
+  users[username].collaborators = users[username].collaborators.filter(c => c !== collaborator);
+  return true;
+}
+
+// Get all users connected to this user (their collabs + anyone who added them)
+function getConnectedUsers(username) {
+  const connected = new Set(getCollaborators(username));
+  for (const [name, data] of Object.entries(users)) {
+    if (data.collaborators && data.collaborators.includes(username)) {
+      connected.add(name);
+    }
+  }
+  return [...connected];
+}
+
+// Edit log — stored per-user, shared with collaborators
+const editLogs = {}; // { username: [{ user, action, time }] }
+
+function addEditLog(username, action) {
+  const entry = { user: username, action, time: new Date().toISOString() };
+  // Add to own log and all connected users' logs
+  const targets = [username, ...getConnectedUsers(username)];
+  for (const target of targets) {
+    if (!editLogs[target]) editLogs[target] = [];
+    editLogs[target].unshift(entry);
+    if (editLogs[target].length > 50) editLogs[target].length = 50;
+  }
+}
+
+function getEditLog(username) {
+  return editLogs[username] || [];
+}
+
 module.exports = {
   worldDataTemplate,
   getUser,
@@ -77,4 +126,10 @@ module.exports = {
   getWorldData,
   saveWorldData,
   updateAccount,
+  getCollaborators,
+  getConnectedUsers,
+  addCollaborator,
+  removeCollaborator,
+  addEditLog,
+  getEditLog,
 };

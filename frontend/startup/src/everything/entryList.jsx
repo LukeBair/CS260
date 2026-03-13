@@ -20,7 +20,7 @@ export function EntryList({ entries }) {
                 > {entry.name}
                 </button>
             ))}
-            <button className="list-item-button" onClick={addEntry}>+</button>
+            <button className="list-item-button add-button" onClick={addEntry}>+</button>
         </>
     );
 }

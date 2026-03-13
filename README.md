@@ -129,3 +129,22 @@ navigating the page to see information should be a bit smoother.
 - dummy login logic, currently no security on it though
 - EntryList data is currently shared, not per user.
 - UseState used to keep track of user input, use effect to asynchronously get data from dummy files.
+
+## Service Deliverable
+- Node.js/Express backend in `service/` directory with its own package.json
+- Frontend served via Express static middleware in production
+- Third party API: Gemini API (`@google/genai`) called from backend for AI story helper chat
+- Backend endpoints:
+  - Auth: `POST /api/auth/register`, `POST /api/auth/login`, `DELETE /api/auth/logout`
+  - World data: `GET /api/world`, `PUT /api/world`
+  - Account: `PUT /api/account`
+  - Collaborators: `GET /api/collaborators`, `POST /api/collaborators`, `DELETE /api/collaborators/:name`
+  - Edit log: `GET /api/edits`
+  - AI search: `POST /api/search`
+- Frontend calls all service endpoints via fetch in `backendCommunicator.jsx`
+- Auth uses httpOnly cookie tokens, bcryptjs for password hashing
+- Collaborator system: add other users to your world, shared world data saved across collaborators
+- Server-side edit log shared across collaborators, displayed in Recent Edits tab
+- Side panel with tabs for Recent Edits and AI Helper
+- Vite proxy config routes `/api` to backend on port 4000 during development
+- Restyled account page with two-column layout (account settings + collaborators)

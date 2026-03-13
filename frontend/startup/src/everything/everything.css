@@ -7,10 +7,122 @@
     /*overflow: hidden;*/
 }
 
-#search-bar {
-    width: 50%;
-    height: 30px;
-    align-self: center;
+#side-panel {
+    display: flex;
+    flex-direction: column;
+    width: 280px;
+    min-width: 220px;
+    height: 90vh;
+    border-left: 1px solid #ccc;
+    padding-left: 10px;
+}
+
+#panel-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 8px;
+}
+
+.panel-tab {
+    flex: 1;
+    padding: 8px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    font-family: 'Alegreya', serif;
+    font-size: 14px;
+    color: #999;
+}
+
+.panel-tab.active {
+    color: var(--dark-background-color);
+    border-bottom-color: var(--accent-color-2);
+}
+
+#edits-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.edit-item {
+    display: flex;
+    flex-direction: column;
+    padding: 6px 8px;
+    border-bottom: 1px solid #eee;
+    font-family: 'Alegreya', serif;
+    font-size: 13px;
+}
+
+.edit-user {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--accent-color-2);
+}
+
+.edit-time {
+    font-size: 11px;
+    color: #999;
+}
+
+.edit-action {
+    color: var(--dark-background-color);
+}
+
+#chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 5px 0;
+}
+
+.chat-msg {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'Alegreya', serif;
+    word-wrap: break-word;
+}
+
+.chat-user {
+    align-self: flex-end;
+    background-color: var(--accent-color-2);
+}
+
+.chat-ai {
+    align-self: flex-start;
+    background-color: var(--dark-background-color);
+    color: var(--background-color);
+}
+
+#chat-input-container {
+    display: flex;
+    gap: 5px;
+    padding-top: 8px;
+}
+
+#chat-input {
+    flex: 1;
+    padding: 6px;
+    font-family: 'Alegreya', serif;
+    font-size: 14px;
+    border: 1px solid #ccc;
+}
+
+#chat-send {
+    padding: 6px 12px;
+    background: var(--dark-background-color);
+    color: var(--background-color);
+    border: none;
+    cursor: pointer;
+    font-family: 'Alegreya', serif;
+    font-size: 14px;
 }
 
 #page-content {
@@ -23,6 +135,9 @@
     display: flex;
     flex-direction: column;
     min-width: 220px;
+    max-width: 240px;
+    border-right: 1px solid #ccc;
+    padding-right: 10px;
 }
 
 #chapter-input {
@@ -56,24 +171,46 @@
     color: #777;
 }
 
+#items-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    overflow-y: auto;
+}
+
 .list-item-button {
-    padding: 6px 10px;
+    padding: 8px 12px;
     text-align: left;
     background-color: var(--background-color);
     color: var(--dark-background-color);
     border: none;
-    border-radius: 0;
+    border-radius: 4px;
     cursor: pointer;
-    font-size: 18px;
+    font-size: 16px;
     font-family: 'Alegreya', serif;
+    transition: background-color 0.15s;
 }
 
-#items-list {
-    display: flex;
-    flex-direction: column;
+.list-item-button:hover {
+    background-color: var(--accent-color-2);
+    opacity: 0.7;
 }
+
 .list-item-button.selected {
     background: var(--accent-color-2);
+}
+
+.list-item-button.add-button {
+    text-align: center;
+    margin-top: 6px;
+    border: 1px dashed #ccc;
+    color: #999;
+    font-size: 20px;
+}
+
+.list-item-button.add-button:hover {
+    border-color: var(--dark-background-color);
+    color: var(--dark-background-color);
 }
 /* Media query for mobile */
 @media (max-width: 768px) {
@@ -137,27 +274,40 @@
     }
 }
 
-#chapter-title {
-    font-family: 'Alegreya', serif;
-    font-size: 24px;
-    margin-bottom: 20px;
-    height: 40px;
-    background-color: var(--background-color);
-    border: none;
-}
-
 #title-container {
     display: flex;
     flex-direction: row;
-    gap: 100px;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+#chapter-title {
+    flex: 1;
+    font-family: 'Alegreya', serif;
+    font-size: 24px;
+    height: 40px;
+    background-color: var(--background-color);
+    border: none;
+    border-bottom: 2px solid var(--accent-color-2);
+    outline: none;
 }
 
 #remove-chapter {
-    padding: 4px;
+    padding: 4px 10px;
     background-color: transparent;
-    border: none;
-    border-radius: 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     color: var(--dark-background-color);
     font-family: 'Alegreya', serif;
-    font-size: 24px;
+    font-size: 18px;
+    cursor: pointer;
+    height: 36px;
+    line-height: 1;
+}
+
+#remove-chapter:hover {
+    background-color: #e74c3c;
+    color: white;
+    border-color: #e74c3c;
 }
