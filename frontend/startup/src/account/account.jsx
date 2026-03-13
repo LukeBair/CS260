@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './account.css';
-import {saveAccountChanges, logout, getCurrentUser} from "../backend/bankendDummy";
+import {getCurrentUser, logout, saveUserStoryData} from "../backend/backendCommunicator";
+import {saveAccountChanges} from "../backend/backendCommunicator";
 
 export function Account() {
   const navigate = useNavigate();
@@ -9,9 +10,9 @@ export function Account() {
   const [username, setUsername] = useState(getCurrentUser() || '');
   const [email, setEmail] = useState('user@example.com');
 
-  function handleLogout() {
-    logout();
-    navigate('/');
+  async function handleLogout() {
+      await logout();
+      navigate('/');
   }
 
   return (

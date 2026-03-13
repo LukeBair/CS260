@@ -1,6 +1,6 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import {naturalLanguageSearch, saveUserStoryData} from '../backend/bankendDummy';
+import {naturalLanguageSearch, saveUserStoryData} from '../backend/backendCommunicator';
 import './everything.css';
 
 export function Everything({ entries, setEntries }) {
@@ -99,9 +99,6 @@ export function Everything({ entries, setEntries }) {
 
   function handlePossibleSearch(e) {
     if (e.key === 'Enter') {
-      console.log(import.meta.env);
-      console.log("tstststt");
-
       naturalLanguageSearch(e.target.value).then(r => {
         alert(`Search results for "${e.target.value}":\n\n${r}`);
       });

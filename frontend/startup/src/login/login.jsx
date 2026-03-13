@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
-import {login, createAccount} from "../backend/bankendDummy";
+import {login, createAccount} from "../backend/backendCommunicator";
 
 export function Login({ onLogin }) {
   const navigate = useNavigate();

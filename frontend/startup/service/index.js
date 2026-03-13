@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const { createUser, createToken, verifyPassword, removeToken, getWorldData, saveWorldData, getUserByToken } = require('./storage');
+const { createUser, createToken, verifyPassword, removeToken, getWorldData, saveWorldData, getUserByToken, updateAccount } = require('./storage');
 const { GoogleGenAI } = require('@google/genai');
 const app = express();
 app.use(express.json());
@@ -10,7 +10,7 @@ app.use(cookieParser());
 // Serve frontend static files in production
 app.use(express.static('public'));
 
-const ai = new GoogleGenAI(process.env.GEMINI_API_KEY);
+const ai = process.env.GEMINI_API_KEY ? new GoogleGenAI(process.env.GEMINI_API_KEY) : null;
 
 // --- Auth endpoints ---
 
@@ -78,6 +78,19 @@ app.put('/api/world', (req, res) => {
   res.json({ success: true });
 });
 
+// --- Account endpoint ---
+
+app.put('/api/account', (req, res) => {
+  const { token } = req.cookies;
+  if (!token) return res.status(401).json({ error: 'Not authenticated' });
+  const username = getUserByToken(token);
+  if (!username) return res.status(401).json({ error: 'Invalid token' });
+
+  const success = updateAccount(username, req.body);
+  if (!success) return res.status(404).json({ error: 'User not found' });
+  res.json({ success: true });
+});
+
 // --- Gemini search endpoint ---
 
 app.post('/api/search', async (req, res) => {
@@ -97,7 +110,7 @@ app.post('/api/search', async (req, res) => {
 });
 
 // SPA fallback
-app.get('*', (req, res) => {
+app.get('{*path}', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 

@@ -4,8 +4,7 @@ import { Login } from './login/login';
 import { Everything } from './everything/everything';
 import { Account } from './account/account';
 import {EntryList} from "./everything/EntryList";
-import {loadUserStoryData, getCurrentUser} from "./backend/bankendDummy";
-import { worldDataTemplate } from './storage/storageDummy';
+import {loadUserStoryData, getCurrentUser} from "./backend/backendCommunicator";
 import './app.css';
 
 function SidebarLayout() {
@@ -48,18 +47,19 @@ function NotFound() {
 }
 
 export default function App() {
-  const [entries, setEntries] = useState(worldDataTemplate);
+  const [entries, setEntries] = useState({ story: [], characters: [], locations: [], props: [], history: [] });
 
   useEffect(() => {
-    const data = loadUserStoryData();
-    if (data) setEntries(data);
+    loadUserStoryData().then(data => {
+      if (data) setEntries(data);
+    });
   }, []);
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Login onLogin={() => {
-          const data = loadUserStoryData();
+        <Route path="/" element={<Login onLogin={async () => {
+          const data = await loadUserStoryData();
           if (data) setEntries(data);
         }} />} />
         <Route element={<SidebarLayout />}>
