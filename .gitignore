@@ -1,1 +1,3 @@
 /.idea/
+frontend/startup/.env
+frontend/startup/service/dbConfig.json
