@@ -19,3 +19,32 @@ const editLogCollection = db.collection('editLogs');
         process.exit(1);
     }
 })();
+
+// User stuff
+
+async function createUser(username, password) {
+    // Check if user already exists
+    const existing = await userCollection.findOne({ username });
+    if (existing) return false;
+
+    // Insert new user document
+    await userCollection.insertOne({
+        username,
+        password: await bcrypt.hash(password, 10),
+        worldData: { story: [], characters: [], locations: [], props: [], history: [] },
+        collaborators: [],
+    });
+    return true;
+}
+
+async function getUser(username) {
+    const user = await userCollection.findOne({ username });
+    if (!user) return null;
+    return { username: user.username, ...user };
+}
+
+async function verifyPassword(username, password) {
+    const user = await getUser(username);
+    if (!user) return false;
+    return bcrypt.compare(password, user.password);
+}
