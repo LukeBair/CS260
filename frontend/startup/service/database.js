@@ -52,3 +52,72 @@ function getUserByToken(token) {
 async function removeToken(token) {
     await userCollection.updateOne({ token }, { $unset: { token: 1 } });
 }
+
+// World data
+async function getWorldData(username) {
+    const user = await userCollection.findOne({ username });
+    return user ? user.worldData : null;
+}
+
+async function saveWorldData(username, worldData) {
+    const result = await userCollection.updateOne({ username }, { $set: { worldData } });
+    return result.modifiedCount > 0;
+}
+
+// Account
+async function updateAccount(username, updates) {
+    const result = await userCollection.updateOne({ username }, { $set: updates });
+    return result.modifiedCount > 0;
+}
+
+// Collaborators
+async function getCollaborators(username) {
+    const user = await userCollection.findOne({ username });
+    return user ? user.collaborators || [] : [];
+}
+
+async function addCollaborator(username, collaborator) {
+    const result = await userCollection.updateOne(
+        { username },
+        { $addToSet: { collaborators: collaborator } }
+    );
+    return result.modifiedCount > 0;
+}
+
+async function removeCollaborator(username, collaborator) {
+    const result = await userCollection.updateOne(
+        { username },
+        { $pull: { collaborators: collaborator } }
+    );
+    return result.modifiedCount > 0;
+}
+
+async function getConnectedUsers(username) {
+    const collaborators = await getCollaborators(username);
+}
+
+// Edit log
+async function addEditLog(username, action) {
+    // TODO
+}
+
+async function getEditLog(username) {
+    // TODO
+}
+
+module.exports = {
+    createUser,
+    verifyPassword,
+    createToken,
+    getUserByToken,
+    removeToken,
+    getWorldData,
+    saveWorldData,
+    updateAccount,
+    getCollaborators,
+    getConnectedUsers,
+    addCollaborator,
+    removeCollaborator,
+    addEditLog,
+    getEditLog,
+};
