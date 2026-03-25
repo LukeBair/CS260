@@ -47,10 +47,10 @@ app.post('/api/auth/login', async (req, res) => {
   res.json({ username });
 });
 
-app.delete('/api/auth/logout', (req, res) => {
+app.delete('/api/auth/logout', async (req, res) => {
   const { token } = req.cookies;
   if (token) {
-    removeToken(token);
+    await removeToken(token);
     res.clearCookie('token');
   }
   res.json({ message: 'Logged out' });
@@ -58,36 +58,36 @@ app.delete('/api/auth/logout', (req, res) => {
 
 // --- World data endpoints ---
 
-app.get('/api/world', (req, res) => {
+app.get('/api/world', async (req, res) => {
   const { token } = req.cookies;
   if (!token) return res.status(401).json({ error: 'Not authenticated' });
-  const username = getUserByToken(token);
+  const username = await getUserByToken(token);
   if (!username) return res.status(401).json({ error: 'Invalid token' });
 
-  res.json(getWorldData(username));
+  res.json(await getWorldData(username));
 });
 
-app.put('/api/world', (req, res) => {
+app.put('/api/world', async (req, res) => {
   const { token } = req.cookies;
   if (!token) return res.status(401).json({ error: 'Not authenticated' });
-  const username = getUserByToken(token);
+  const username = await getUserByToken(token);
   if (!username) return res.status(401).json({ error: 'Invalid token' });
 
   const editAction = req.body._editAction;
   const worldData = { ...req.body };
   delete worldData._editAction;
 
-  const success = saveWorldData(username, worldData);
+  const success = await saveWorldData(username, worldData);
   if (!success) return res.status(404).json({ error: 'User not found' });
 
   // Also save to all connected users so they share the same world
-  for (const collab of getConnectedUsers(username)) {
-    saveWorldData(collab, worldData);
+  for (const collab of await getConnectedUsers(username)) {
+    await saveWorldData(collab, worldData);
   }
 
   // Log the edit for the user and their collaborators
   if (editAction) {
-    addEditLog(username, editAction);
+    await addEditLog(username, editAction);
   }
 
   res.json({ success: true });
@@ -95,64 +95,64 @@ app.put('/api/world', (req, res) => {
 
 // --- Account endpoint ---
 
-app.put('/api/account', (req, res) => {
+app.put('/api/account', async (req, res) => {
   const { token } = req.cookies;
   if (!token) return res.status(401).json({ error: 'Not authenticated' });
-  const username = getUserByToken(token);
+  const username = await getUserByToken(token);
   if (!username) return res.status(401).json({ error: 'Invalid token' });
 
-  const success = updateAccount(username, req.body);
+  const success = await updateAccount(username, req.body);
   if (!success) return res.status(404).json({ error: 'User not found' });
   res.json({ success: true });
 });
 
 // --- Collaborator endpoints ---
 
-app.get('/api/collaborators', (req, res) => {
+app.get('/api/collaborators', async (req, res) => {
   const { token } = req.cookies;
   if (!token) return res.status(401).json({ error: 'Not authenticated' });
-  const username = getUserByToken(token);
+  const username = await getUserByToken(token);
   if (!username) return res.status(401).json({ error: 'Invalid token' });
 
-  res.json({ collaborators: getCollaborators(username) });
+  res.json({ collaborators: await getCollaborators(username) });
 });
 
-app.post('/api/collaborators', (req, res) => {
+app.post('/api/collaborators', async (req, res) => {
   const { token } = req.cookies;
   if (!token) return res.status(401).json({ error: 'Not authenticated' });
-  const username = getUserByToken(token);
+  const username = await getUserByToken(token);
   if (!username) return res.status(401).json({ error: 'Invalid token' });
 
   const { collaborator } = req.body;
   if (!collaborator) return res.status(400).json({ error: 'Collaborator username required' });
   if (collaborator === username) return res.status(400).json({ error: 'Cannot add yourself' });
 
-  const success = addCollaborator(username, collaborator);
+  const success = await addCollaborator(username, collaborator);
   if (!success) return res.status(404).json({ error: 'User not found or already added' });
 
-  addEditLog(username, `Added ${collaborator} as collaborator`);
-  res.json({ collaborators: getCollaborators(username) });
+  await addEditLog(username, `Added ${collaborator} as collaborator`);
+  res.json({ collaborators: await getCollaborators(username) });
 });
 
-app.delete('/api/collaborators/:collaborator', (req, res) => {
+app.delete('/api/collaborators/:collaborator', async (req, res) => {
   const { token } = req.cookies;
   if (!token) return res.status(401).json({ error: 'Not authenticated' });
-  const username = getUserByToken(token);
+  const username = await getUserByToken(token);
   if (!username) return res.status(401).json({ error: 'Invalid token' });
 
-  removeCollaborator(username, req.params.collaborator);
-  res.json({ collaborators: getCollaborators(username) });
+  await removeCollaborator(username, req.params.collaborator);
+  res.json({ collaborators: await getCollaborators(username) });
 });
 
 // --- Edit log endpoint ---
 
-app.get('/api/edits', (req, res) => {
+app.get('/api/edits', async (req, res) => {
   const { token } = req.cookies;
   if (!token) return res.status(401).json({ error: 'Not authenticated' });
-  const username = getUserByToken(token);
+  const username = await getUserByToken(token);
   if (!username) return res.status(401).json({ error: 'Invalid token' });
 
-  res.json({ edits: getEditLog(username) });
+  res.json({ edits: await getEditLog(username) });
 });
 
 // --- Gemini search endpoint ---
