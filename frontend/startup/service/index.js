@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const { createUser, createToken, verifyPassword, removeToken, getWorldData, saveWorldData, getUserByToken, updateAccount, getCollaborators, getConnectedUsers, addCollaborator, removeCollaborator, addEditLog, getEditLog } = require('./storage');
+const { createUser, createToken, verifyPassword, removeToken, getWorldData, saveWorldData, getUserByToken, updateAccount, getCollaborators, getConnectedUsers, addCollaborator, removeCollaborator, addEditLog, getEditLog } = require('./database');
 const { GoogleGenAI } = require('@google/genai');
 
 const app = express();
