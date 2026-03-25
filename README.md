@@ -148,3 +148,12 @@ navigating the page to see information should be a bit smoother.
 - Side panel with tabs for Recent Edits and AI Helper
 - Vite proxy config routes `/api` to backend on port 4000 during development
 - Restyled account page with two-column layout (account settings + collaborators)
+
+## DB Deliverable
+- MongoDB Atlas used for persistent storage, replacing in-memory `storage.js` with `database.js`
+- Two MongoDB collections: `users` (accounts, passwords, tokens, world data, collaborators) and `editLogs` (per-user edit history)
+- User registration and login credentials stored and retrieved from MongoDB using bcryptjs hashing
+- Auth tokens stored as a field on the user document instead of a separate in-memory map
+- World data (story, characters, locations, props, history) persisted in MongoDB per user
+- Collaborator lists and shared world data saved/synced through MongoDB `$addToSet` and `$pull` operators
+- Simon DB deployed to production environment
