@@ -94,15 +94,35 @@ async function removeCollaborator(username, collaborator) {
 
 async function getConnectedUsers(username) {
     const collaborators = await getCollaborators(username);
+    // Also find anyone who added this user as a collaborator
+    const reverseMatches = await userCollection
+        .find({ collaborators: username })
+        .project({ username: 1 })
+        .toArray();
+    const connected = new Set(collaborators);
+    for (const doc of reverseMatches) {
+        connected.add(doc.username);
+    }
+    return [...connected];
 }
 
 // Edit log
 async function addEditLog(username, action) {
-    // TODO
+    const entry = { user: username, action, time: new Date().toISOString() };
+    // Add to own log and all connected users' logs
+    const targets = [username, ...(await getConnectedUsers(username))];
+    for (const target of targets) {
+        await editLogCollection.updateOne(
+            { username: target },
+            { $push: { logs: { $each: [entry], $position: 0, $slice: 50 } } },
+            { upsert: true }
+        );
+    }
 }
 
 async function getEditLog(username) {
-    // TODO
+    const doc = await editLogCollection.findOne({ username });
+    return doc ? doc.logs : [];
 }
 
 module.exports = {
