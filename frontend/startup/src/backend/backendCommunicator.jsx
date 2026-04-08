@@ -49,12 +49,8 @@ export async function saveUserStoryData(worldData) {
     return res.ok;
 }
 
-// AI Search
-export async function naturalLanguageSearch(query) {
-    const context = await loadUserStoryData();
-    query = "You are a story editor + continuity helper, given the authors query you will look through the story, character, location, prop, and history context to best answer their question. Be straight forward and to the point. \n\n CONTEXT"
-        + JSON.stringify(context) + "\n\n QUERY: "
-        + query;
+// AI Query
+async function sendQuery(query) {
     const response = await fetch('/api/search', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -63,6 +59,42 @@ export async function naturalLanguageSearch(query) {
     const data = await response.json();
     if (!response.ok) throw new Error(data.error);
     return data.text;
+}
+
+function parseEntryRequests(response) {
+    const matches = [...response.matchAll(/ENTRY_REQUEST:\s*(\w+)\/(.+)/g)];
+    return matches.map(m => ({ category: m[1], name: m[2].trim() }));
+}
+
+function lookupEntries(requests, entries) {
+    const results = [];
+    for (const req of requests) {
+        const items = entries[req.category];
+        if (items) {
+            const entry = items.find(e => e.name === req.name);
+            if (entry) {
+                results.push(`[${req.category}] ${entry.name}: ${entry.desc}`);
+            }
+        }
+    }
+    return results.length > 0 ? results.join('\n\n') : null;
+}
+
+export async function queryAI(query, context, entries, history) {
+    const { buildQuery } = await import('./queryBuilder.jsx');
+    const finalQuery = buildQuery(query, context, history);
+    const responseText = await sendQuery(finalQuery);
+
+    const entryRequests = parseEntryRequests(responseText);
+    if (entryRequests.length > 0 && entries) {
+        const entryData = lookupEntries(entryRequests, entries);
+        if (entryData) {
+            const followUpQuery = buildQuery(entryData, '', history, true);
+            return await sendQuery(followUpQuery);
+        }
+    }
+
+    return responseText;
 }
 
 // Account Management

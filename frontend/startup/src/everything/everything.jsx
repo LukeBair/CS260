@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import {naturalLanguageSearch, saveUserStoryData, fetchEditLog} from '../backend/backendCommunicator';
+import {queryAI, saveUserStoryData, fetchEditLog} from '../backend/backendCommunicator';
+import {getEntryList} from '../backend/queryBuilder.jsx';
 import './everything.css';
 
 export function Everything({ entries, setEntries, recentEdits, setRecentEdits}) {
@@ -10,6 +11,7 @@ export function Everything({ entries, setEntries, recentEdits, setRecentEdits}) 
   const [selectedIndex, setSelectedIndex] = useState(null);
   const [attributionsVisible, setAttributionVisible] = useState(false);
   const [chatMessages, setChatMessages] = useState([]);
+  const [chatHistory, setChatHistory] = useState([]);
   const [chatInput, setChatInput] = useState('');
   const [panelTab, setPanelTab] = useState('edits');
 
@@ -124,11 +126,18 @@ export function Everything({ entries, setEntries, recentEdits, setRecentEdits}) 
     setChatMessages(prev => [...prev, { role: 'user', text: userMessage }]);
     setChatInput('');
 
-    naturalLanguageSearch(userMessage).then(r => {
+    const context = `Page: ${section}\nSelected: ${chapterName}\nDescription: ${description}\n\nAvailable entries:${getEntryList(entries)}`;
+    queryAI(userMessage, context, entries, chatHistory).then(r => {
+      setChatHistory(prev => [...prev, { role: 'user', text: userMessage }, { role: 'ai', text: r }]);
       setChatMessages(prev => [...prev, { role: 'ai', text: r }]);
     }).catch(() => {
       setChatMessages(prev => [...prev, { role: 'ai', text: 'Search failed.' }]);
     });
+  }
+
+  function handleClearChat() {
+    setChatMessages([]);
+    setChatHistory([]);
   }
 
   function handleChatKeyDown(e) {
@@ -170,6 +179,7 @@ export function Everything({ entries, setEntries, recentEdits, setRecentEdits}) 
             </div>
           ) : (
             <>
+              <button id="chat-clear" onClick={handleClearChat}>New Chat</button>
               <div id="chat-messages">
                 {chatMessages.map((msg, i) => (
                   <div key={i} className={`chat-msg chat-${msg.role}`}>{msg.text}</div>
