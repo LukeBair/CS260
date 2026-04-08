@@ -17,6 +17,26 @@
     padding-left: 10px;
 }
 
+#presence-bar {
+    display: flex;
+    gap: 6px;
+    padding: 6px 0;
+}
+
+.presence-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background-color: var(--accent-color-2);
+    color: var(--dark-background-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Alegreya', serif;
+    font-size: 14px;
+    font-weight: bold;
+}
+
 #panel-tabs {
     display: flex;
     gap: 0;
