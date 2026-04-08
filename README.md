@@ -157,3 +157,10 @@ navigating the page to see information should be a bit smoother.
 - World data (story, characters, locations, props, history) persisted in MongoDB per user
 - Collaborator lists and shared world data saved/synced through MongoDB `$addToSet` and `$pull` operators
 - Simon DB deployed to production environment
+
+## Web Socket Deliverable
+- WebSocket client connection established in `backendCommunicator.jsx` on frontend
+- Real-time updates for collaborators: when one user makes an edit, a message is sent to the WebSocket server, which broadcasts it to all other connected clients for that world
+- Edit messages have both a notification and update the actual world data in the frontend state
+- WebSockets are used to show what users are currently on the story/world
+- misc updates to ui, ai connection, and other various qol stuff
