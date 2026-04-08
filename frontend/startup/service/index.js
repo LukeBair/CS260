@@ -3,6 +3,8 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const { createUser, createToken, verifyPassword, removeToken, getWorldData, saveWorldData, getUserByToken, updateAccount, getCollaborators, getConnectedUsers, addCollaborator, removeCollaborator, addEditLog, getEditLog } = require('./database');
 const { GoogleGenAI } = require('@google/genai');
+const { createServer } = require('http');
+const { WebSocketServer } = require('ws');
 
 const app = express();
 app.use(express.json());
@@ -12,6 +14,37 @@ app.use(cookieParser());
 app.use(express.static('public'));
 
 const ai = process.env.GEMINI_API_KEY ? new GoogleGenAI(process.env.GEMINI_API_KEY) : null;
+
+const server = createServer(app);
+const wss = new WebSocketServer({ server });
+
+const userConnections = new Map();
+
+function broadcastToUser(username, message) {
+  const connections = userConnections.get(username);
+  if (connections) {
+    const message = JSON.stringify(message);
+    connections.forEach((ws) => {
+      if (ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify(message));
+      }
+    });
+  }
+}
+
+wss.on('connection', (ws) => {
+  let user = null;
+
+  ws.on('message', async (message) => {
+    try {
+      const msg = JSON.parse(message);
+      if (msg.type === 'identify' && msg.username) {
+        userConnections.set(msg.username, msg);
+      }
+      userConnections.get(user).add(ws);
+    } catch (err) { /* who really cares */ }
+  });
+})
 
 // --- Auth endpoints ---
 
