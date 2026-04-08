@@ -21,7 +21,7 @@ export function connectWebSocket(username, onEditNotification, onWorldUpdated) {
             const msg = JSON.parse(event.data);
             if (msg.type === 'editNotification' && editCallback) {
                 editCallback(msg.edit);
-            } else if (msg.type === 'worldUpdated' && worldCallback) {
+            } else if (msg.type === 'worldUpdate' && worldCallback) {
                 worldCallback();
             }
         } catch (e) {
