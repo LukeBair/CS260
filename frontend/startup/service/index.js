@@ -35,7 +35,7 @@ function broadcastToUser(username, message) {
 wss.on('connection', (ws) => {
   let user = null;
 
-  ws.on('message', async (message) => {
+  ws.on('message',(message) => {
     try {
       const msg = JSON.parse(message);
       if (msg.type === 'identify' && msg.username) {
@@ -44,7 +44,28 @@ wss.on('connection', (ws) => {
       userConnections.get(user).add(ws);
     } catch (err) { /* who really cares */ }
   });
-})
+
+  ws.on('close', () => {
+    if (user && userConnections.has(user)) {
+      userConnections.get(user).delete(ws);
+      if (userConnections.get(user).size === 0) {
+        userConnections.delete(user);
+      }
+    }
+  });
+
+  ws.isAlive = true;
+  ws.on('pong', () => { ws.isAlive = true; });
+});
+
+// loop to detect and close dead connections
+setInterval(() => {
+  wss.clients.forEach((ws) => {
+    if (!ws.isAlive) return ws.terminate();
+    ws.isAlive = false;
+    ws.ping();
+  });
+}, 30000);
 
 // --- Auth endpoints ---
 
@@ -96,7 +117,6 @@ app.get('/api/world', async (req, res) => {
   if (!token) return res.status(401).json({ error: 'Not authenticated' });
   const username = await getUserByToken(token);
   if (!username) return res.status(401).json({ error: 'Invalid token' });
-
   res.json(await getWorldData(username));
 });
 
@@ -120,7 +140,13 @@ app.put('/api/world', async (req, res) => {
 
   // Log the edit for the user and their collaborators
   if (editAction) {
-    await addEditLog(username, editAction);
+    // await addEditLog(username, editAction);
+    const edit = { username, action: editAction, timestamp: new Date().toISOString() };
+    const connectedUsers = await getConnectedUsers(username);
+    for (const collaber of connectedUsers) {
+      broadcastToUser(collaber, { type: 'editNotification', edit: edit });
+      broadcastToUser(collaber, { type: 'worldUpdate' });
+    }
   }
 
   res.json({ success: true });
@@ -212,4 +238,4 @@ app.get('{*path}', (req, res) => {
 });
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
-app.listen(port, () => console.log(`Server running on port ${port}`));
+server.listen(port, () => console.log(`Server running on port ${port}`));
