@@ -41,7 +41,7 @@ export function Login({ onLogin }) {
               <div className="form-group">
                 <label htmlFor="password">Password:</label>
                 <input type="password" id="password" name="password" required onChange={(e)=>setPassword(e.target.value)}/>
-                <a onClick={() => {setLoggingIn(!loggingIn)}}>Create Account</a>
+                <a onClick={() => {setLoggingIn(!loggingIn)}}>{loggingIn ? 'Create Account' : 'Login'}</a>
               </div>
               <button type="button" onClick={handleLogin}>{loggingIn ? 'Login' : 'Create Account'}</button>
             </form>

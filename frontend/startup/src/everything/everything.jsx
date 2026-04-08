@@ -38,9 +38,30 @@ export function Everything({ entries, setEntries, recentEdits, setRecentEdits}) 
     ? entries[section]?.[selectedIndex]?.name ?? ''
     : 'default chapter name';
 
+  const logEditRef = React.useRef({ pending: null, count: 0, timer: null });
+
   function logEdit(action) {
+    const ref = logEditRef.current;
+    if (ref.pending && ref.pending === action) {
+      ref.count++;
+    } else {
+      flushLogEdit();
+      ref.pending = action;
+      ref.count = 1;
+    }
+    clearTimeout(ref.timer);
+    ref.timer = setTimeout(flushLogEdit, 500);
+  }
+
+  function flushLogEdit() {
+    const ref = logEditRef.current;
+    if (!ref.pending) return;
+    const action = ref.count > 1 ? `${ref.pending} (x${ref.count})` : ref.pending;
     const time = new Date().toLocaleTimeString();
     setRecentEdits(prev => [{ action, time, user: 'You' }, ...prev].slice(0, 50));
+    ref.pending = null;
+    ref.count = 0;
+    clearTimeout(ref.timer);
   }
 
   function handleAddEntry() {

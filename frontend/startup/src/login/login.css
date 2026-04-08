@@ -106,6 +106,23 @@
     font-size: 18px;
     margin-top: 10px;
     font-family: 'Alegreya', serif;
+    transition: opacity 0.15s;
+}
+
+.login-container button:hover {
+    opacity: 0.7;
+}
+
+.form-group a {
+    color: var(--accent-color-2);
+    cursor: pointer;
+    font-size: 13px;
+    margin-top: 5px;
+    transition: opacity 0.15s;
+}
+
+.form-group a:hover {
+    opacity: 0.6;
 }
 
 @media (max-width: 768px) {
