@@ -3,15 +3,17 @@ let reconnectTimeout = null;
 let currentUsername = null;
 let editCallback = null;
 let worldCallback = null;
+let presenceCallback = null;
 let pendingEdit = null;
 let pendingCount = 0;
 let flushTimer = null;
 const BATCH_DELAY = 500;
 
-export function connectWebSocket(username, onEditNotification, onWorldUpdated) {
+export function connectWebSocket(username, onEditNotification, onWorldUpdated, onPresenceUpdate) {
     currentUsername = username;
     editCallback = onEditNotification;
     worldCallback = onWorldUpdated;
+    presenceCallback = onPresenceUpdate;
 
     const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws'; // locally will be ws, prod is wss
     socket = new WebSocket(`${protocol}://${window.location.host}/ws`);
@@ -36,6 +38,8 @@ export function connectWebSocket(username, onEditNotification, onWorldUpdated) {
                 flushTimer = setTimeout(flushPendingEdit, BATCH_DELAY);
             } else if (msg.type === 'worldUpdate' && worldCallback) {
                 worldCallback();
+            } else if (msg.type === 'presence' && presenceCallback) {
+                presenceCallback(msg.users);
             }
         } catch (e) {
             console.error('WebSocket message parse error', e);
@@ -45,7 +49,7 @@ export function connectWebSocket(username, onEditNotification, onWorldUpdated) {
     socket.onclose = () => {
         if (currentUsername) {
             reconnectTimeout = setTimeout(() => {
-                connectWebSocket(currentUsername, editCallback, worldCallback);
+                connectWebSocket(currentUsername, editCallback, worldCallback, presenceCallback);
             }, 3000);
         }
     };
@@ -67,6 +71,7 @@ export function disconnectWebSocket() {
     currentUsername = null;
     editCallback = null;
     worldCallback = null;
+    presenceCallback = null;
     clearTimeout(reconnectTimeout);
     if (socket) {
         socket.close();

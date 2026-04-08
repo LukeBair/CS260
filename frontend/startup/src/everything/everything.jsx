@@ -4,7 +4,7 @@ import {queryAI, saveUserStoryData, fetchEditLog} from '../backend/backendCommun
 import {getEntryList} from '../backend/queryBuilder.jsx';
 import './everything.css';
 
-export function Everything({ entries, setEntries, recentEdits, setRecentEdits}) {
+export function Everything({ entries, setEntries, recentEdits, setRecentEdits, onlineUsers = []}) {
   const location = useLocation();
   const section = location.pathname.split('/').pop();
   const isStory = section === 'story' || location.pathname === '/everything';
@@ -183,6 +183,15 @@ export function Everything({ entries, setEntries, recentEdits, setRecentEdits}) 
           </label>
         </div>
         <div id="side-panel">
+          {onlineUsers.length > 0 && (
+            <div id="presence-bar">
+              {onlineUsers.map(user => (
+                <div key={user} className="presence-avatar" title={user}>
+                  {user.charAt(0).toUpperCase()}
+                </div>
+              ))}
+            </div>
+          )}
           <div id="panel-tabs">
             <button className={`panel-tab ${panelTab === 'edits' ? 'active' : ''}`} onClick={() => setPanelTab('edits')}>Recent Edits</button>
             <button className={`panel-tab ${panelTab === 'ai' ? 'active' : ''}`} onClick={() => setPanelTab('ai')}>AI Helper</button>

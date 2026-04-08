@@ -50,6 +50,7 @@ function NotFound() {
 export default function App() {
   const [entries, setEntries] = useState({ story: [], characters: [], locations: [], props: [], history: [] });
   const [recentEdits, setRecentEdits] = useState([]);
+  const [onlineUsers, setOnlineUsers] = useState([]);
 
   function startWebSocket(username) {
     connectWebSocket(
@@ -63,6 +64,9 @@ export default function App() {
       },
       () => {
         loadUserStoryData().then(data => { if (data) setEntries(data); });
+      },
+      (users) => {
+        setOnlineUsers(users);
       }
     );
   }
@@ -85,7 +89,7 @@ export default function App() {
           startWebSocket(getCurrentUser());
         }} />} />
         <Route element={<SidebarLayout />}>
-          <Route path="/everything" element={<Everything entries={entries} setEntries={setEntries} recentEdits={recentEdits} setRecentEdits={setRecentEdits} />}>
+          <Route path="/everything" element={<Everything entries={entries} setEntries={setEntries} recentEdits={recentEdits} setRecentEdits={setRecentEdits} onlineUsers={onlineUsers} />}>
             <Route index element={<Navigate to="story" replace />} />
             <Route path="story" element={<EntryList entries={entries.story} />} />
             <Route path="characters" element={<EntryList entries={entries.characters} />} />

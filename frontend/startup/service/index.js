@@ -33,6 +33,20 @@ function broadcastToUser(username, message) {
   }
 }
 
+function broadcastPresence(username) {
+  getConnectedUsers(username).then(collaborators => {
+    const online = collaborators.filter(u => userConnections.has(u));
+    // send each collaborator the list of who's online among their group
+    for (const collab of collaborators) {
+      const theirOnline = collaborators.filter(u => u !== collab && userConnections.has(u));
+      if (userConnections.has(username) && username !== collab) theirOnline.push(username);
+      broadcastToUser(collab, { type: 'presence', users: [...new Set(theirOnline)] });
+    }
+    // also send to the user themselves
+    broadcastToUser(username, { type: 'presence', users: online.filter(u => u !== username) });
+  });
+}
+
 wss.on('connection', (ws) => {
   let user = null;
 
@@ -45,6 +59,7 @@ wss.on('connection', (ws) => {
           userConnections.set(user, new Set());
         }
         userConnections.get(user).add(ws);
+        broadcastPresence(user);
       }
     } catch (err) { /* who really cares */ }
   });
@@ -55,6 +70,7 @@ wss.on('connection', (ws) => {
       if (userConnections.get(user).size === 0) {
         userConnections.delete(user);
       }
+      broadcastPresence(user);
     }
   });
 
