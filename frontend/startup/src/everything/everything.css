@@ -125,6 +125,22 @@
     font-size: 14px;
 }
 
+#chat-clear {
+    padding: 6px 12px;
+    background: transparent;
+    border: 1px dashed #ccc;
+    color: #999;
+    cursor: pointer;
+    font-family: 'Alegreya', serif;
+    font-size: 13px;
+    transition: all 0.15s;
+}
+
+#chat-clear:hover {
+    border-color: var(--dark-background-color);
+    color: var(--dark-background-color);
+}
+
 #page-content {
     display: flex;
     flex-direction: row;
