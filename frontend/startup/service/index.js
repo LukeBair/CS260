@@ -23,10 +23,11 @@ const userConnections = new Map();
 function broadcastToUser(username, message) {
   const connections = userConnections.get(username);
   if (connections) {
-    const message = JSON.stringify(message);
-    connections.forEach((ws) => {
-      if (ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify(message));
+    const messageJSON = JSON.stringify(message);
+    connections.forEach(ws => {
+      // if websocket is ready
+      if (ws.readyState === 1) {
+        ws.send(messageJSON);
       }
     });
   }
@@ -39,9 +40,12 @@ wss.on('connection', (ws) => {
     try {
       const msg = JSON.parse(message);
       if (msg.type === 'identify' && msg.username) {
-        userConnections.set(msg.username, msg);
+        user = msg.username;
+        if(!userConnections.has(user)) {
+          userConnections.set(user, new Set());
+        }
+        userConnections.get(user).add(ws);
       }
-      userConnections.get(user).add(ws);
     } catch (err) { /* who really cares */ }
   });
 
@@ -133,8 +137,9 @@ app.put('/api/world', async (req, res) => {
   const success = await saveWorldData(username, worldData);
   if (!success) return res.status(404).json({ error: 'User not found' });
 
+  const users = await getConnectedUsers(username);
   // Also save to all connected users so they share the same world
-  for (const collab of await getConnectedUsers(username)) {
+  for (const collab of users) {
     await saveWorldData(collab, worldData);
   }
 
@@ -222,7 +227,7 @@ app.post('/api/search', async (req, res) => {
 
   try {
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-2.5-flash-lite',
       contents: query,
     });
     res.json({ text: response.text });

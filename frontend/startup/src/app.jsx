@@ -5,6 +5,7 @@ import { Everything } from './everything/everything';
 import { Account } from './account/account';
 import {EntryList} from "./everything/EntryList";
 import {loadUserStoryData, getCurrentUser} from "./backend/backendCommunicator";
+import { connectWebSocket, disconnectWebSocket } from './backend/wsConnection';
 import './app.css';
 
 function SidebarLayout() {
@@ -48,11 +49,31 @@ function NotFound() {
 
 export default function App() {
   const [entries, setEntries] = useState({ story: [], characters: [], locations: [], props: [], history: [] });
+  const [recentEdits, setRecentEdits] = useState([]);
+
+  function startWebSocket(username) {
+    connectWebSocket(
+      username,
+      (edit) => {
+        setRecentEdits(prev => [{
+          user: edit.username,
+          action: edit.action,
+          time: new Date(edit.timestamp).toLocaleTimeString(),
+        }, ...prev].slice(0, 50));
+      },
+      () => {
+        loadUserStoryData().then(data => { if (data) setEntries(data); });
+      }
+    );
+  }
 
   useEffect(() => {
-    loadUserStoryData().then(data => {
-      if (data) setEntries(data);
-    });
+    const user = getCurrentUser();
+    if (user) {
+      loadUserStoryData().then(data => { if (data) setEntries(data); });
+        startWebSocket(user);
+      }
+      return () => disconnectWebSocket();
   }, []);
 
   return (
@@ -61,9 +82,10 @@ export default function App() {
         <Route path="/" element={<Login onLogin={async () => {
           const data = await loadUserStoryData();
           if (data) setEntries(data);
+          startWebSocket(getCurrentUser());
         }} />} />
         <Route element={<SidebarLayout />}>
-          <Route path="/everything" element={<Everything entries={entries} setEntries={setEntries} />}>
+          <Route path="/everything" element={<Everything entries={entries} setEntries={setEntries} recentEdits={recentEdits} setRecentEdits={setRecentEdits} />}>
             <Route index element={<Navigate to="story" replace />} />
             <Route path="story" element={<EntryList entries={entries.story} />} />
             <Route path="characters" element={<EntryList entries={entries.characters} />} />

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './account.css';
 import { getCurrentUser, logout, saveAccountChanges, getCollaborators, addCollaborator, removeCollaborator } from '../backend/backendCommunicator';
+import { disconnectWebSocket} from "../backend/wsConnection";
 
 export function Account() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ export function Account() {
   }, []);
 
   async function handleLogout() {
+    disconnectWebSocket();
     await logout();
     navigate('/');
   }

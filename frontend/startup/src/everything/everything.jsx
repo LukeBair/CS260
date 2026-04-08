@@ -3,7 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import {naturalLanguageSearch, saveUserStoryData, fetchEditLog} from '../backend/backendCommunicator';
 import './everything.css';
 
-export function Everything({ entries, setEntries }) {
+export function Everything({ entries, setEntries, recentEdits, setRecentEdits}) {
   const location = useLocation();
   const section = location.pathname.split('/').pop();
   const isStory = section === 'story' || location.pathname === '/everything';
@@ -12,7 +12,6 @@ export function Everything({ entries, setEntries }) {
   const [chatMessages, setChatMessages] = useState([]);
   const [chatInput, setChatInput] = useState('');
   const [panelTab, setPanelTab] = useState('edits');
-  const [recentEdits, setRecentEdits] = useState([]);
 
   // Load edit log from server on mount
   useEffect(() => {
